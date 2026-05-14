@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aravind Reddy Jitta — Numerology SWAT Analysis</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  :root {
+    --bg: #f8f7f4;
+    --surface: #ffffff;
+    --surface2: #f1efe8;
+    --border: rgba(0,0,0,0.1);
+    --border2: rgba(0,0,0,0.18);
+    --text: #1a1a1a;
+    --text2: #5f5e5a;
+    --text3: #888780;
+    --purple-bg: #eeedfe; --purple-border: #534ab7; --purple-text: #3c3489;
+    --teal-bg: #e1f5ee; --teal-border: #0f6e56; --teal-text: #085041;
+    --coral-bg: #faece7; --coral-border: #993c1d; --coral-text: #712b13;
+    --amber-bg: #faeeda; --amber-border: #854f0b; --amber-text: #633806;
+    --blue-bg: #e6f1fb; --blue-border: #185fa5; --blue-text: #0c447c;
+    --green-bg: #eaf3de; --green-border: #3b6d11; --green-text: #27500a;
+    --red-bg: #fcebeb; --red-border: #a32d2d; --red-text: #791f1f;
+    --pink-bg: #fbeaf0; --pink-border: #993556; --pink-text: #72243e;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a18; --surface: #242422; --surface2: #2c2c2a;
+      --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.18);
+      --text: #f1efe8; --text2: #b4b2a9; --text3: #888780;
+      --purple-bg: #26215c; --purple-border: #afa9ec; --purple-text: #cecbf6;
+      --teal-bg: #04342c; --teal-border: #5dcaa5; --teal-text: #9fe1cb;
+      --coral-bg: #4a1b0c; --coral-border: #f0997b; --coral-text: #f5c4b3;
+      --amber-bg: #412402; --amber-border: #ef9f27; --amber-text: #fac775;
+      --blue-bg: #042c53; --blue-border: #85b7eb; --blue-text: #b5d4f4;
+      --green-bg: #173404; --green-border: #97c459; --green-text: #c0dd97;
+      --red-bg: #501313; --red-border: #f09595; --red-text: #f7c1c1;
+      --pink-bg: #4b1528; --pink-border: #ed93b1; --pink-text: #f4c0d1;
+    }
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .hero {
+    background: var(--purple-bg);
+    border-bottom: 0.5px solid var(--purple-border);
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+  }
+
+  .hero-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--purple-border);
+    color: var(--purple-bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 500;
+    margin: 0 auto 1rem;
+  }
+
+  .hero h1 { font-size: 22px; font-weight: 500; color: var(--purple-text); margin-bottom: 4px; }
+  .hero p { font-size: 14px; color: var(--purple-border); }
+
+  .numbers-strip {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center;
+    padding: 1.25rem 1.5rem;
+    background: var(--surface);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .num-pill {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 0.5px solid var(--border2);
+    font-size: 13px;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--text);
+    transition: all 0.15s;
+  }
+  .num-pill:hover { border-color: var(--purple-border); color: var(--purple-text); background: var(--purple-bg); }
+  .num-pill .n { font-weight: 500; font-size: 15px; }
+
+  .nav-tabs {
+    display: flex; gap: 0;
+    background: var(--surface);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 1.5rem;
+    overflow-x: auto;
+  }
+
+  .nav-tab {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text2);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.15s;
+    background: none;
+    border-top: none; border-left: none; border-right: none;
+  }
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active { color: var(--purple-text); border-bottom-color: var(--purple-border); font-weight: 500; }
+
+  .content { padding: 1.5rem; max-width: 900px; margin: 0 auto; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px; }
+
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .card:hover { border-color: var(--border2); transform: translateY(-1px); }
+  .card.expandable:after {
+    content: '';
+    position: absolute; bottom: 12px; right: 14px;
+    font-family: 'tabler-icons';
+    content: "\ea5f";
+    font-size: 14px;
+    color: var(--text3);
+  }
+
+  .card-label { font-size: 12px; color: var(--text3); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .card-number { font-size: 32px; font-weight: 500; line-height: 1; margin-bottom: 4px; }
+  .card-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .card-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .card.purple { background: var(--purple-bg); border-color: var(--purple-border); }
+  .card.purple .card-number, .card.purple .card-title { color: var(--purple-text); }
+  .card.teal { background: var(--teal-bg); border-color: var(--teal-border); }
+  .card.teal .card-number, .card.teal .card-title { color: var(--teal-text); }
+  .card.coral { background: var(--coral-bg); border-color: var(--coral-border); }
+  .card.coral .card-number, .card.coral .card-title { color: var(--coral-text); }
+  .card.amber { background: var(--amber-bg); border-color: var(--amber-border); }
+  .card.amber .card-number, .card.amber .card-title { color: var(--amber-text); }
+  .card.blue { background: var(--blue-bg); border-color: var(--blue-border); }
+  .card.blue .card-number, .card.blue .card-title { color: var(--blue-text); }
+  .card.green { background: var(--green-bg); border-color: var(--green-border); }
+  .card.green .card-number, .card.green .card-title { color: var(--green-text); }
+  .card.pink { background: var(--pink-bg); border-color: var(--pink-border); }
+  .card.pink .card-number, .card.pink .card-title { color: var(--pink-text); }
+  .card.red { background: var(--red-bg); border-color: var(--red-border); }
+  .card.red .card-number, .card.red .card-title { color: var(--red-text); }
+
+  .strength-item, .weakness-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .strength-item .icon { color: var(--teal-border); font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .weakness-item .icon { color: var(--coral-border); font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+
+  .item-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .item-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .karmic-banner {
+    background: var(--amber-bg);
+    border: 0.5px solid var(--amber-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 16px;
+  }
+  .karmic-banner h3 { color: var(--amber-text); font-size: 16px; font-weight: 500; margin-bottom: 8px; }
+  .karmic-banner p { font-size: 13px; color: var(--amber-text); line-height: 1.7; }
+
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  @media (max-width: 560px) { .do-dont { grid-template-columns: 1fr; } }
+
+  .do-list, .dont-list {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 0.5px solid var(--border);
+  }
+  .do-list h3 { color: var(--teal-text); font-size: 15px; font-weight: 500; margin-bottom: 12px; }
+  .dont-list h3 { color: var(--coral-text); font-size: 15px; font-weight: 500; margin-bottom: 12px; }
+
+  .do-list li, .dont-list li {
+    font-size: 13px; color: var(--text2);
+    line-height: 1.6; margin-bottom: 8px;
+    padding-left: 18px; position: relative;
+    list-style: none;
+  }
+  .do-list li:before { content: '✓'; position: absolute; left: 0; color: var(--teal-border); font-weight: 500; }
+  .dont-list li:before { content: '✕'; position: absolute; left: 0; color: var(--coral-border); font-weight: 500; }
+
+  .year-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .year-header {
+    padding: 1rem 1.25rem;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .year-num { font-size: 28px; font-weight: 500; }
+  .year-info h3 { font-size: 15px; font-weight: 500; }
+  .year-info p { font-size: 12px; color: var(--text3); }
+  .year-body { padding: 1.25rem; display: none; }
+  .year-body.open { display: block; }
+  .year-body p { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 10px; }
+  .year-body h4 { font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text); }
+
+  .rule-card {
+    background: var(--surface);
+    border-left: 3px solid var(--purple-border);
+    border-radius: 0 10px 10px 0;
+    border-top: 0.5px solid var(--border);
+    border-right: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    padding: 1rem 1.25rem;
+    margin-bottom: 10px;
+  }
+  .rule-num { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .rule-text { font-size: 14px; font-weight: 500; color: var(--purple-text); margin-bottom: 4px; }
+  .rule-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .section-title { font-size: 16px; font-weight: 500; margin-bottom: 14px; color: var(--text); }
+  .section-sub { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 16px; }
+
+  .modal-overlay {
+    display: none; position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+    align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 1.5rem;
+    max-width: 540px; width: 100%;
+    max-height: 80vh; overflow-y: auto;
+    border: 0.5px solid var(--border2);
+  }
+  .modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+  .modal-close { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 20px; padding: 0; }
+  .modal h2 { font-size: 18px; font-weight: 500; }
+  .modal .number-badge { font-size: 36px; font-weight: 500; margin-bottom: 4px; }
+  .modal p { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 10px; }
+  .modal ul { margin-left: 16px; margin-bottom: 10px; }
+  .modal ul li { font-size: 13px; color: var(--text2); line-height: 1.7; margin-bottom: 4px; }
+  .modal h4 { font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text); margin-top: 12px; }
+
+  .badge {
+    display: inline-block;
+    font-size: 11px; padding: 3px 10px;
+    border-radius: 999px;
+    font-weight: 500; margin-bottom: 8px;
+  }
+  .badge.karmic { background: var(--amber-bg); color: var(--amber-text); border: 0.5px solid var(--amber-border); }
+  .badge.master { background: var(--purple-bg); color: var(--purple-text); border: 0.5px solid var(--purple-border); }
+
+  .swat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  @media (max-width: 560px) { .swat-grid { grid-template-columns: 1fr; } }
+
+  .swat-box {
+    border-radius: 12px; padding: 1.25rem;
+    border: 0.5px solid var(--border);
+  }
+  .swat-box h3 { font-size: 14px; font-weight: 500; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .swat-box ul { list-style: none; }
+  .swat-box ul li { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 6px; padding-left: 14px; position: relative; }
+  .swat-box ul li:before { position: absolute; left: 0; font-weight: 500; }
+
+  .swat-s { background: var(--teal-bg); border-color: var(--teal-border); }
+  .swat-s h3 { color: var(--teal-text); }
+  .swat-s ul li:before { content: '+'; color: var(--teal-border); }
+
+  .swat-w { background: var(--coral-bg); border-color: var(--coral-border); }
+  .swat-w h3 { color: var(--coral-text); }
+  .swat-w ul li:before { content: '−'; color: var(--coral-border); }
+
+  .swat-a { background: var(--blue-bg); border-color: var(--blue-border); }
+  .swat-a h3 { color: var(--blue-text); }
+  .swat-a ul li:before { content: '→'; color: var(--blue-border); }
+
+  .swat-t { background: var(--red-bg); border-color: var(--red-border); }
+  .swat-t h3 { color: var(--red-text); }
+  .swat-t ul li:before { content: '!'; color: var(--red-border); }
+
+  .weekly-ritual {
+    background: var(--surface2);
+    border-radius: 12px; padding: 1.25rem;
+    border: 0.5px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .ritual-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .ritual-item:last-child { border-bottom: none; }
+  .ritual-num { width: 22px; height: 22px; border-radius: 50%; background: var(--purple-bg); color: var(--purple-text); font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 0.5px solid var(--purple-border); margin-top: 1px; }
+  .ritual-text { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  footer { text-align: center; padding: 2rem; font-size: 12px; color: var(--text3); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-avatar">AR</div>
+  <h1>Aravind Reddy Jitta</h1>
+  <p>Born April 11, 1999 &nbsp;·&nbsp; Full Numerology SWAT Analysis</p>
+</div>
+
+<div class="numbers-strip">
+  <div class="num-pill" onclick="openModal('lp')"><span class="n">7</span> Life Path</div>
+  <div class="num-pill" onclick="openModal('destiny')"><span class="n">5</span> Destiny</div>
+  <div class="num-pill" onclick="openModal('soul')"><span class="n">8</span> Soul Urge</div>
+  <div class="num-pill" onclick="openModal('personality')"><span class="n">6</span> Personality</div>
+  <div class="num-pill" onclick="openModal('birthday')"><span class="n">11</span> Birthday</div>
+  <div class="num-pill" onclick="openModal('maturity')"><span class="n">3</span> Maturity</div>
+  <div class="num-pill" onclick="openModal('year')"><span class="n">7</span> Year 2026</div>
+</div>
+
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('overview')"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Overview</button>
+  <button class="nav-tab" onclick="showTab('swat')"><i class="ti ti-target" aria-hidden="true"></i> SWAT</button>
+  <button class="nav-tab" onclick="showTab('strengths')"><i class="ti ti-bolt" aria-hidden="true"></i> Strengths</button>
+  <button class="nav-tab" onclick="showTab('weaknesses')"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Weaknesses</button>
+  <button class="nav-tab" onclick="showTab('karmic')"><i class="ti ti-infinity" aria-hidden="true"></i> Karmic Debt</button>
+  <button class="nav-tab" onclick="showTab('time')"><i class="ti ti-calendar" aria-hidden="true"></i> Time Energy</button>
+  <button class="nav-tab" onclick="showTab('action')"><i class="ti ti-checklist" aria-hidden="true"></i> Action Plan</button>
+</div>
+
+<div class="content">
+
+  <!-- OVERVIEW -->
+  <div class="section active" id="tab-overview">
+    <p class="section-sub">Click any number card below to see the full detail and calculation.</p>
+    <div class="grid-3">
+      <div class="card purple expandable" onclick="openModal('lp')">
+        <div class="card-label">Life Path</div>
+        <div class="card-number">7</div>
+        <div class="card-title">The Seeker</div>
+        <div class="card-desc">Your core life purpose and personality essence.</div>
+      </div>
+      <div class="card teal expandable" onclick="openModal('destiny')">
+        <div class="card-label">Destiny</div>
+        <div class="card-number">5</div>
+        <div class="card-title">The Catalyst</div>
+        <div class="card-desc">What you are here to achieve. Contains Karmic Debt 14.</div>
+      </div>
+      <div class="card amber expandable" onclick="openModal('soul')">
+        <div class="card-label">Soul Urge</div>
+        <div class="card-number">8</div>
+        <div class="card-title">The Inner Powerhouse</div>
+        <div class="card-desc">Your deepest inner desire and motivation.</div>
+      </div>
+      <div class="card blue expandable" onclick="openModal('personality')">
+        <div class="card-label">Personality</div>
+        <div class="card-number">6</div>
+        <div class="card-title">The Trusted One</div>
+        <div class="card-desc">How the world sees you before they know you.</div>
+      </div>
+      <div class="card pink expandable" onclick="openModal('birthday')">
+        <div class="card-label">Birthday</div>
+        <div class="card-number">11</div>
+        <div class="card-title">The Intuitive Spark</div>
+        <div class="card-desc">Master number. Raw intuition and sensitivity.</div>
+      </div>
+      <div class="card green expandable" onclick="openModal('maturity')">
+        <div class="card-label">Maturity</div>
+        <div class="card-number">3</div>
+        <div class="card-title">The Wise Communicator</div>
+        <div class="card-desc">Your power in your 30s and beyond.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Who you are at your core</div>
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-desc" style="font-size:14px; line-height:1.8;">
+        You are a deep thinker with a hunger for real impact. Quietly magnetic, analytically sharp, and built for mastery — but constantly pulled in multiple directions by your own brilliant mind. On the outside, people see a warm, responsible, trustworthy person. But underneath, there is a mind that never stops searching — questioning, analysing, pulling apart reality to find what is actually true. And even deeper, at your soul level, you burn for power, impact, and significance. You want to <em>matter</em>. You want to build something real.
+      </div>
+    </div>
+
+    <div class="section-title">Your main life themes</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><i class="ti ti-arrows-shuffle" aria-hidden="true"></i> Security vs freedom</div>
+        <div class="card-desc">You will keep facing situations that force you to choose between security and freedom. This is your recurring test.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-users" aria-hidden="true"></i> The trusted advisor</div>
+        <div class="card-desc">People will constantly come to you for grounding and support — sometimes draining you before you notice.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-refresh" aria-hidden="true"></i> Reinvention cycles</div>
+        <div class="card-desc">The universe keeps presenting opportunities for reinvention and change. Your Destiny 5 makes this non-negotiable.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-focus" aria-hidden="true"></i> Discipline vs scatter</div>
+        <div class="card-desc">Themes of discipline vs scattered energy will follow you until you master sustained focus on one thing.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SWAT -->
+  <div class="section" id="tab-swat">
+    <p class="section-sub">Your full SWAT analysis — Strengths, Weaknesses, Opportunities, Threats — through the lens of your numbers.</p>
+    <div class="swat-grid">
+      <div class="swat-box swat-s">
+        <h3><i class="ti ti-bolt" aria-hidden="true"></i> Strengths</h3>
+        <ul>
+          <li>Razor-sharp analytical mind — sees what others miss</li>
+          <li>Natural authority people trust before you prove it</li>
+          <li>Deep loyalty and commitment when you care</li>
+          <li>Resilience — you recover from setbacks quietly but completely</li>
+          <li>Powerful intuition (Master 11) — almost always right</li>
+          <li>Full stack versatility across technical domains</li>
+          <li>Magnetic presence without trying</li>
+        </ul>
+      </div>
+      <div class="swat-box swat-w">
+        <h3><i class="ti ti-alert-triangle" aria-hidden="true"></i> Weaknesses</h3>
+        <ul>
+          <li>Starting strong and abandoning before completion</li>
+          <li>Isolation as escape when things get hard</li>
+          <li>Overthinking replacing action</li>
+          <li>Suppressing emotion to appear strong</li>
+          <li>Control disguised as helpfulness</li>
+          <li>Chasing exciting new ideas as avoidance</li>
+        </ul>
+      </div>
+      <div class="swat-box swat-a">
+        <h3><i class="ti ti-trending-up" aria-hidden="true"></i> Opportunities</h3>
+        <ul>
+          <li>Personal Year 7 — perfect for deep mastery in 2026</li>
+          <li>AI/tech skills have explosive demand right now</li>
+          <li>STEM OPT gives 3 years — more runway than most</li>
+          <li>Maturity 3 means best years still ahead in your 30s</li>
+          <li>Full stack background makes you rare in mobile market</li>
+          <li>Year 8 in 2027 — power and abundance incoming</li>
+        </ul>
+      </div>
+      <div class="swat-box swat-t">
+        <h3><i class="ti ti-shield-off" aria-hidden="true"></i> Threats</h3>
+        <ul>
+          <li>Karmic Debt 14 — shortcuts that collapse at worst moments</li>
+          <li>OPT visa window — finite and ticking</li>
+          <li>Pattern of multiple unfinished projects</li>
+          <li>Financial pressure distorting long-term decisions</li>
+          <li>Paralysis by analysis at critical decision points</li>
+          <li>Isolation during Personal Year 7 tipping into stagnation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title">Love, relationships and family</div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">What works for you</div>
+        <div class="card-desc" style="line-height:1.8;">Partner who is emotionally intelligent and independent. Someone who respects your solitude without taking it personally. Relationship built on trust, shared vision, and mutual growth.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">What is risky for you</div>
+        <div class="card-desc" style="line-height:1.8;">Clingy or emotionally volatile partners. People who need constant reassurance. Relationships where you become the fixer or emotional parent — your 6 personality attracts this and it always ends in burnout.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Career and money truth</div>
+    <div class="grid-2">
+      <div class="card teal">
+        <div class="card-title">What suits you</div>
+        <div class="card-desc" style="line-height:1.8;">Work with meaning and depth. Roles with real autonomy. AI, tech, research, strategy, writing. Building something of your own — your Soul Urge 8 is not wired to stay someone else's employee forever.</div>
+      </div>
+      <div class="card coral">
+        <div class="card-title">What doesn't suit you</div>
+        <div class="card-desc" style="line-height:1.8;">Repetitive low-autonomy roles. Office politics and shallow performance culture. Work that requires ignoring your ethics or intuition. Soulless corporate environments long-term.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STRENGTHS -->
+  <div class="section" id="tab-strengths">
+    <p class="section-sub">Your 7 core superpowers — what makes you genuinely formidable when aligned.</p>
+
+    <div class="strength-item">
+      <i class="ti ti-brain icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Razor-sharp analytical mind</div>
+        <div class="item-desc">Life Path 7 gives you the ability to see what others miss. You can read between the lines of people, situations, and systems. Where others see noise, you find signal.</div>
+      </div>
+    </div>
+    <div class="strength-item">
+      <i class="ti ti-crown icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Natural authority and presence</div>
+        <div class="item-desc">Soul Urge 8 combined with Personality 6 means people trust you and look up to you — often before you have even proven yourself. You carry quiet authority naturally.</div>
+      </div>
+    </div>
+    <div class="strength-item">
+      <i class="ti ti-shield-check icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Deep sense of responsibility</div>
+        <div class="item-desc">You take commitments seriously. When you care about something or someone, you go all in. People know that when Aravind commits, it means something real.</div>
+      </div>
+    </div>
+    <div class="strength-item">
+      <i class="ti ti-arrows-shuffle icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Adaptability in chaos</div>
+        <div class="item-desc">Destiny 5 makes you capable of reinventing yourself and thriving in chaos that paralyses others. Change does not break you — it activates you, when you are aligned.</div>
+      </div>
+    </div>
+    <div class="strength-item">
+      <i class="ti ti-eye icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Powerful intuition (Master 11)</div>
+        <div class="item-desc">Birthday 11 is a master number of intuition. You often know things without knowing how you know them. This is not random guessing. It is a genuine faculty. Trust it more.</div>
+      </div>
+    </div>
+    <div class="strength-item">
+      <i class="ti ti-heart-handshake icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">The ability to inspire trust</div>
+        <div class="item-desc">Your Personality 6 means people naturally open up to you, confide in you, and feel safe around you — even strangers. You are a natural safe harbour for others.</div>
+      </div>
+    </div>
+    <div class="strength-item">
+      <i class="ti ti-trending-up icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Late-blooming mastery (Maturity 3)</div>
+        <div class="item-desc">Your most powerful, expressive, and successful years are still ahead. Your 30s and beyond bring your true voice, your real platform, and your peak creative and professional power.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEAKNESSES -->
+  <div class="section" id="tab-weaknesses">
+    <p class="section-sub">Your honest self-sabotage patterns. Knowing them is how you stop them running your life unconsciously.</p>
+
+    <div class="weakness-item">
+      <i class="ti ti-door-exit icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Isolation as escape</div>
+        <div class="item-desc">When things get hard, your 7 energy retreats into the mind or into solitude. This can look like wisdom but often becomes avoidance. You disappear instead of confronting what is in front of you.</div>
+      </div>
+    </div>
+    <div class="weakness-item">
+      <i class="ti ti-hand-stop icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Control disguised as helpfulness</div>
+        <div class="item-desc">Your Soul Urge 8 craves control. Your Personality 6 makes you helpful. Combined, you give a lot — but with a hidden expectation of loyalty or outcomes. When people don't deliver, you feel quietly betrayed.</div>
+      </div>
+    </div>
+    <div class="weakness-item">
+      <i class="ti ti-wind icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Scattered energy and unfinished chapters</div>
+        <div class="item-desc">Destiny 5 with Karmic Debt 14 means you start with brilliant energy and lose momentum. Multiple projects, multiple interests, multiple directions — and sometimes none fully completed. This is your most costly pattern.</div>
+      </div>
+    </div>
+    <div class="weakness-item">
+      <i class="ti ti-hourglass icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Overthinking as a blocker</div>
+        <div class="item-desc">You can analyse a decision from 40 angles and still not move. Your 7 mind loves depth but turns into paralysis when under stress. Perfectionism and over-research become sophisticated procrastination.</div>
+      </div>
+    </div>
+    <div class="weakness-item">
+      <i class="ti ti-mask icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Suppressing emotion to appear strong</div>
+        <div class="item-desc">You feel deeply — Soul Urge 8 and Birthday 11 are intensely emotional underneath. But your outer 6 and 7 create a composed, stoic exterior. People may not know you are struggling. You may not even admit it to yourself.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KARMIC DEBT -->
+  <div class="section" id="tab-karmic">
+    <div class="karmic-banner">
+      <h3><i class="ti ti-infinity" aria-hidden="true"></i> Karmic Debt 14 — The Freedom Trap</h3>
+      <p>Your Destiny Number reduced through 14 before reaching 5. This is one of the four karmic debt numbers (13, 14, 16, 19) and it is the most relevant soul lesson in your entire chart.</p>
+    </div>
+
+    <div class="section-title">What Karmic Debt 14 means</div>
+    <div class="card" style="margin-bottom:12px;">
+      <div class="card-desc" style="font-size:14px; line-height:1.8;">
+        Karmic Debt 14 speaks to the misuse of freedom in past experience — taking shortcuts, indulging in excess, or refusing commitment and responsibility. In this life, the lesson is to <strong>build through discipline and consistency</strong>, not through chaos and brilliance alone. Real freedom must be earned, not grabbed.
+      </div>
+    </div>
+
+    <div class="section-title">How it shows up in your real life</div>
+    <div class="weakness-item">
+      <i class="ti ti-run icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Starting and abandoning</div>
+        <div class="item-desc">Ecommerce store — left mid-way. New business — also incomplete. Now thinking of another. This is the 14 pattern in its most literal form. Each abandoned start reinforces the cycle.</div>
+      </div>
+    </div>
+    <div class="weakness-item">
+      <i class="ti ti-shortcut icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">Shortcut temptation</div>
+        <div class="item-desc">Fake experience consultancy. Hiding car defects. Jumping to businesses that seem "easier". The 14 always presents a shortcut that feels logical in the moment and collapses at the worst time.</div>
+      </div>
+    </div>
+    <div class="weakness-item">
+      <i class="ti ti-sparkles icon" aria-hidden="true"></i>
+      <div>
+        <div class="item-title">New idea as escape</div>
+        <div class="item-desc">Every time the current path gets difficult, a new exciting idea appears. The 14 uses your genuine creativity and intelligence against you — making the escape feel like ambition.</div>
+      </div>
+    </div>
+
+    <div class="section-title">The gift inside the debt</div>
+    <div class="card teal" style="margin-bottom:12px;">
+      <div class="card-desc" style="font-size:14px; line-height:1.8;">
+        Once you embrace structure without killing your freedom, you become extraordinarily effective. The 14 is trying to teach you that real, lasting freedom is <em>built through discipline</em> — not escaped into. Every time you finish what you start, you break the pattern and reclaim your power.
+      </div>
+    </div>
+
+    <div class="section-title">Your 14 antidote — 3 rules</div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 1</div>
+      <div class="rule-text">"No new starts until current things are finished."</div>
+      <div class="rule-desc">Write this down. Put it somewhere visible. Apply it to business ideas, learning tracks, and relationships.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 2</div>
+      <div class="rule-text">"Is this ambition or avoidance?"</div>
+      <div class="rule-desc">Ask this every time a new idea appears. The 14 disguises escape as ambition. This question breaks the spell.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 3</div>
+      <div class="rule-text">"Real freedom is built, not grabbed."</div>
+      <div class="rule-desc">Repeat this when shortcuts appear attractive. Your soul already knows the truth of this. Let it guide you.</div>
+    </div>
+  </div>
+
+  <!-- TIME ENERGY -->
+  <div class="section" id="tab-time">
+    <p class="section-sub">Your personal year energy and what each year is asking of you.</p>
+
+    <div class="year-card">
+      <div class="year-header" onclick="toggleYear('y2026')">
+        <div style="width:48px;height:48px;border-radius:10px;background:var(--purple-bg);border:0.5px solid var(--purple-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-size:20px;font-weight:500;color:var(--purple-text);">7</span>
+        </div>
+        <div class="year-info">
+          <h3>2026 — Personal Year 7</h3>
+          <p>The Year of Mastery and Deep Work</p>
+        </div>
+        <i class="ti ti-chevron-down" style="margin-left:auto;color:var(--text3);" aria-hidden="true"></i>
+      </div>
+      <div class="year-body open" id="y2026">
+        <div class="karmic-banner" style="margin-bottom:12px;">
+          <p><strong>You are a Life Path 7 entering a Personal Year 7.</strong> This is rare and significant. Whatever 7 means for you — truth, depth, solitude, mastery — it is being doubled in 2026.</p>
+        </div>
+        <h4>What this year is for</h4>
+        <p>Inner architecture. You are building the foundation that your next three years will stand on. What you discover, learn, heal, and decide in 2026 will shape everything that follows. This is the root system. 2027 is the tree.</p>
+        <h4>Opportunities</h4>
+        <p>Mastery of a chosen skill or field. Spiritual and psychological clarity. Solitude as a superpower. Breaking Karmic Debt 14 patterns once and for all. Meaningful one-on-one connections over surface networking.</p>
+        <h4>Warnings</h4>
+        <p>Do not force external results — Year 7 resists performance. Watch for isolation tipping into stagnation. Overthinking will be at peak levels without grounding. Avoid major impulsive financial decisions.</p>
+        <h4>Focus on</h4>
+        <p>Deep learning. Physical health and grounding routines. Quality relationships over quantity. Journaling or reflection practice. Completing what you have started.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header" onclick="toggleYear('y2027')">
+        <div style="width:48px;height:48px;border-radius:10px;background:var(--amber-bg);border:0.5px solid var(--amber-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-size:20px;font-weight:500;color:var(--amber-text);">8</span>
+        </div>
+        <div class="year-info">
+          <h3>2027 — Personal Year 8</h3>
+          <p>The Power and Abundance Year</p>
+        </div>
+        <i class="ti ti-chevron-down" style="margin-left:auto;color:var(--text3);" aria-hidden="true"></i>
+      </div>
+      <div class="year-body" id="y2027">
+        <p>This is the year your Soul Urge 8 has been waiting for. Career acceleration, income growth, real authority, and the opportunity to build something significant. Everything you prepared in 2026 gets its real-world test and reward here.</p>
+        <h4>Prepare now by</h4>
+        <p>Clearing mental and emotional clutter in 2026. Identifying the skill you want to have mastered. Stabilising financially so you enter 2027 from strength, not desperation. Planning the business relaunch — execute it in 2027, not before.</p>
+        <h4>Warning</h4>
+        <p>A man who wastes his Year 7 arrives at Year 8 unprepared and either misses the opportunities or self-destructs under the pressure. Use 2026 to sharpen yourself. Year 8 rewards the prepared.</p>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div class="year-header" onclick="toggleYear('y2028')">
+        <div style="width:48px;height:48px;border-radius:10px;background:var(--teal-bg);border:0.5px solid var(--teal-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <span style="font-size:20px;font-weight:500;color:var(--teal-text);">9</span>
+        </div>
+        <div class="year-info">
+          <h3>2028 — Personal Year 9</h3>
+          <p>The Completion and Release Year</p>
+        </div>
+        <i class="ti ti-chevron-down" style="margin-left:auto;color:var(--text3);" aria-hidden="true"></i>
+      </div>
+      <div class="year-body" id="y2028">
+        <p>Year 9 is the end of a major 9-year cycle. It is a year of completion, release, and letting go of what no longer serves the next version of you. What was built in Year 8 gets consolidated. What does not belong in your next chapter falls away.</p>
+        <h4>Energy</h4>
+        <p>Humanitarian, philosophical, and deeply reflective. Strong creative and expressive energy (feeding into your Maturity 3). Some endings that feel bittersweet but are necessary. The slate is cleared for a powerful new cycle beginning in 2029.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION PLAN -->
+  <div class="section" id="tab-action">
+    <p class="section-sub">Everything distilled into rules, rituals, and a clear do and don't list.</p>
+
+    <div class="section-title">Your 3 life rules for 2026</div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 1</div>
+      <div class="rule-text">"Depth before width."</div>
+      <div class="rule-desc">You are built for mastery, not multitasking. Pick one lane — one skill, one job track, one direction — and go deep before going wide. Your Karmic 14 will tempt you to scatter. Resist it every single time.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 2</div>
+      <div class="rule-text">"Freedom is built, not escaped into."</div>
+      <div class="rule-desc">Every time you chase freedom through avoidance or impulsive change, it costs you more than it gives. Build systems, routines, and financial foundations so freedom becomes your earned reality — not your fantasy.</div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">Rule 3</div>
+      <div class="rule-text">"Speak before you disappear."</div>
+      <div class="rule-desc">When something hurts, when you disagree, when you are overwhelmed — say it early. Your pattern of going silent and then either erupting or withdrawing costs you in every relationship. Your 11 intuition knows the truth early. Use your voice.</div>
+    </div>
+
+    <div class="section-title" style="margin-top:1.5rem;">Weekly reset ritual — every Sunday</div>
+    <div class="weekly-ritual">
+      <div class="ritual-item">
+        <div class="ritual-num">1</div>
+        <div class="ritual-text"><strong>Review one unfinished thing</strong> from the week — take one small action on it before Sunday ends.</div>
+      </div>
+      <div class="ritual-item">
+        <div class="ritual-num">2</div>
+        <div class="ritual-text"><strong>Check in meaningfully</strong> with one important person in your life — not just a text, a real conversation.</div>
+      </div>
+      <div class="ritual-item">
+        <div class="ritual-num">3</div>
+        <div class="ritual-text"><strong>15 minutes of silence</strong> — no phone, no content, just your mind. Your 7 needs this to reset and access clarity.</div>
+      </div>
+      <div class="ritual-item">
+        <div class="ritual-num">4</div>
+        <div class="ritual-text"><strong>Write down one thing you are avoiding</strong> and why. Name it. That alone breaks half its power over you.</div>
+      </div>
+      <div class="ritual-item">
+        <div class="ritual-num">5</div>
+        <div class="ritual-text"><strong>Set one single priority</strong> for the coming week — not a list, one priority. Protect it.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Do and don't</div>
+    <div class="do-dont">
+      <div class="do-list">
+        <h3><i class="ti ti-check" aria-hidden="true"></i> Do</h3>
+        <ul>
+          <li>Trust your intuition — it is almost always right</li>
+          <li>Invest in deep knowledge of one chosen field</li>
+          <li>Build financial systems and long-term plans now</li>
+          <li>Cultivate a small loyal circle over a wide network</li>
+          <li>Take regular alone time without guilt</li>
+          <li>Say difficult things early, calmly, directly</li>
+          <li>Let yourself be seen by people who have earned it</li>
+          <li>Apply for jobs with volume and targeting simultaneously</li>
+          <li>Build one AI project in the next 3 weeks</li>
+        </ul>
+      </div>
+      <div class="dont-list">
+        <h3><i class="ti ti-x" aria-hidden="true"></i> Don't</h3>
+        <ul>
+          <li>Start any new business before 6 months stable income</li>
+          <li>Abandon projects the moment they become routine</li>
+          <li>Use solitude as avoidance</li>
+          <li>Let overthinking replace action</li>
+          <li>Chase freedom by running — build it instead</li>
+          <li>Take shortcuts that risk your visa status</li>
+          <li>Apply to jobs with one generic resume</li>
+          <li>Spend OPT runway on FAANG prep right now</li>
+          <li>Suppress struggle behind a composed exterior</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card purple" style="margin-top:8px;">
+      <div class="card-title" style="font-size:15px; margin-bottom:8px;">The big picture truth</div>
+      <div class="card-desc" style="font-size:13px; line-height:1.8;">You are not lacking ideas or intelligence. You are lacking committed follow-through on one thing at a time. That is the entire lesson of your Karmic Debt 14 — and 2026 is the year the universe has set aside for you to finally learn it. Your best years are not behind you. They are being built right now, quietly, in 2026.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-content">
+    <div class="modal-header">
+      <div>
+        <div class="number-badge" id="modal-number"></div>
+        <h2 id="modal-title"></h2>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()" aria-label="Close"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<footer>Aravind Reddy Jitta &nbsp;·&nbsp; Numerology SWAT Analysis &nbsp;·&nbsp; Born April 11, 1999</footer>
+
+<script>
+const modals = {
+  lp: {
+    number: '7', color: 'var(--purple-text)',
+    title: 'Life Path 7 — The Seeker',
+    body: `
+      <p><strong>Calculation:</strong> Day (1+1=2) + Month (0+4=4) + Year (1+9+9+9=28→10→1) = 2+4+1 = <strong>7</strong></p>
+      <h4>What this number means</h4>
+      <p>The 7 is the most spiritually and intellectually oriented of all life path numbers. You are here to seek truth, develop deep knowledge, and understand the hidden workings of the world and human nature.</p>
+      <h4>Your core traits as a 7</h4>
+      <ul>
+        <li>Analytical, introspective, and deeply thoughtful</li>
+        <li>Drawn to knowledge, research, and understanding systems</li>
+        <li>Naturally private — your inner world is rich and complex</li>
+        <li>Highly perceptive — you read people and situations accurately</li>
+        <li>Need for solitude to recharge and access your best thinking</li>
+      </ul>
+      <h4>Your 7 challenge</h4>
+      <p>The 7 can become isolated, overly skeptical, or trapped in the mind. The lesson is to trust your deep knowing AND stay connected to the world enough to make your insights useful.</p>
+    `
+  },
+  destiny: {
+    number: '5', color: 'var(--teal-text)',
+    title: 'Destiny 5 — The Catalyst',
+    body: `
+      <span class="badge karmic">Karmic Debt 14</span>
+      <p><strong>Calculation:</strong> ARAVIND(6) + REDDY(2) + JITTA(6) = 14 → <strong>5</strong></p>
+      <p>Note: The sum passed through 14 before reaching 5 — this is the Karmic Debt number embedded in your destiny.</p>
+      <h4>What Destiny 5 means</h4>
+      <p>Your life purpose involves freedom, change, versatility, and catalysing transformation in your own life and others'. You are here to experience the full range of human experience — not to settle into one small corner of it.</p>
+      <h4>How this shows up</h4>
+      <ul>
+        <li>Restlessness and need for variety and new experiences</li>
+        <li>Ability to adapt rapidly when others freeze</li>
+        <li>Natural talent for connecting different worlds and people</li>
+        <li>Drawn to freedom in career, lifestyle, and relationships</li>
+      </ul>
+      <h4>The Karmic Debt 14 embedded here</h4>
+      <p>Before this number became 5, it was 14 — a karmic debt about misused freedom. The lesson: real freedom must be built through discipline, not grabbed through shortcuts. Every shortcut you take reinforces the debt. Every thing you finish breaks it.</p>
+    `
+  },
+  soul: {
+    number: '8', color: 'var(--amber-text)',
+    title: 'Soul Urge 8 — The Inner Powerhouse',
+    body: `
+      <p><strong>Calculation:</strong> Vowels only — A,A,I(11) + E(5) + I,A(10) = 26 → <strong>8</strong></p>
+      <h4>What your soul actually wants</h4>
+      <p>At your deepest level, you desire power, achievement, financial abundance, and real-world impact. You want to matter. You want to build something that lasts. You want authority that is earned, not given.</p>
+      <h4>How this manifests</h4>
+      <ul>
+        <li>Deep drive for financial independence and security</li>
+        <li>Need to be respected and taken seriously</li>
+        <li>Ambition that never fully goes quiet, even when suppressed</li>
+        <li>Tendency to take on leadership roles naturally</li>
+        <li>Fear of being seen as weak or unsuccessful</li>
+      </ul>
+      <h4>The 8 tension</h4>
+      <p>Your outer 7 craves solitude and truth. Your inner 8 craves power and achievement. This creates a real internal tension — the philosopher who also wants to be the king. When integrated, you become the wise leader. When not, you oscillate between retreat and overreach.</p>
+    `
+  },
+  personality: {
+    number: '6', color: 'var(--blue-text)',
+    title: 'Personality 6 — The Trusted One',
+    body: `
+      <span class="badge master">Master Number 22 in consonants</span>
+      <p><strong>Calculation:</strong> Consonants — R,V,N,D(22) + R,D,D,Y(6) + J,T,T(5) = 33 → <strong>6</strong></p>
+      <p>Note: The Master Number 22 appears in your first name consonants — raw building power exists in your personality layer.</p>
+      <h4>How the world sees you</h4>
+      <p>Before people know you deeply, they perceive warmth, responsibility, and trustworthiness. You appear nurturing, stable, and caring. People feel safe around you almost immediately.</p>
+      <h4>Your 6 traits externally</h4>
+      <ul>
+        <li>You are the person people call in a crisis</li>
+        <li>You give excellent advice and are deeply loyal</li>
+        <li>You carry an air of quiet responsibility</li>
+        <li>People project their need for a parent or mentor onto you</li>
+      </ul>
+      <h4>The 6 trap</h4>
+      <p>You can give and give until you silently resent. You can become the fixer in relationships and then feel used. Your 6 personality attracts people who need rescuing — and your 8 soul will eventually feel suffocated by that dynamic.</p>
+    `
+  },
+  birthday: {
+    number: '11', color: 'var(--pink-text)',
+    title: 'Birthday 11 — The Intuitive Spark',
+    body: `
+      <span class="badge master">Master Number — not reduced</span>
+      <p><strong>Calculation:</strong> Born on the <strong>11th</strong> — master number, never reduced to 2.</p>
+      <h4>What the 11 birthday gives you</h4>
+      <p>The 11 is a master number of intuition, sensitivity, and spiritual awareness. Your birthday gives you an almost otherworldly capacity to sense things before they happen, read people accurately, and access insight that seems to come from nowhere.</p>
+      <h4>How this shows up</h4>
+      <ul>
+        <li>Gut feelings that are almost always accurate when you listen</li>
+        <li>Heightened sensitivity to other people's emotions and environments</li>
+        <li>Moments of sudden clarity or knowing that bypass logical reasoning</li>
+        <li>Unusual resilience — you recover from difficulty in ways that surprise others</li>
+        <li>Creative and inspirational energy that others are drawn to</li>
+      </ul>
+      <h4>The 11 challenge</h4>
+      <p>The same sensitivity that gives you intuition can create anxiety, overthinking, and overwhelm in noisy or chaotic environments. Protecting your energy and choosing your surroundings carefully is not weakness for you — it is maintenance.</p>
+    `
+  },
+  maturity: {
+    number: '3', color: 'var(--green-text)',
+    title: 'Maturity 3 — The Wise Communicator',
+    body: `
+      <p><strong>Calculation:</strong> Life Path (7) + Destiny (5) = 12 → <strong>3</strong></p>
+      <h4>What this means for your future</h4>
+      <p>Your Maturity Number activates fully in your 30s and beyond. The 3 is the number of creative expression, communication, joy, and inspired influence. Your most powerful and fulfilling years are still ahead of you.</p>
+      <h4>What becomes available to you</h4>
+      <ul>
+        <li>Your true voice — the way you express ideas that moves and inspires people</li>
+        <li>A real platform — writing, speaking, teaching, leading, creating</li>
+        <li>Integration of your depth (7) and ambition (8) into something genuinely expressive and impactful</li>
+        <li>Joy replacing the heaviness that may characterise your 20s</li>
+      </ul>
+      <h4>How to prepare</h4>
+      <p>The 3 Maturity rewards people who have done their inner work and built their foundations. Everything you are doing in 2026 — the learning, the discipline, the self-honesty — is preparation for this chapter. It is coming. Build toward it.</p>
+    `
+  },
+  year: {
+    number: '7', color: 'var(--purple-text)',
+    title: 'Personal Year 7 — 2026',
+    body: `
+      <p><strong>Calculation:</strong> (1+1) + (0+4) + (2+0+2+6) = 2+4+10 = 16 → <strong>7</strong></p>
+      <p>As a Life Path 7 in a Personal Year 7, this frequency is doubled. This is rare and significant.</p>
+      <h4>The theme</h4>
+      <p>Inner architecture. Mastery. Truth. Solitude. This is not a year of loud external achievement — it is a year of building the foundation that the next three years stand on.</p>
+      <h4>Focus on</h4>
+      <ul>
+        <li>Deep learning in one chosen skill or field</li>
+        <li>Resolving what you have been carrying — old wounds, unfinished decisions</li>
+        <li>Physical health and grounding to anchor the intense mental energy</li>
+        <li>Quality relationships over quantity — depth over breadth</li>
+      </ul>
+      <h4>Avoid</h4>
+      <ul>
+        <li>Forcing external results or chasing visibility</li>
+        <li>Starting new businesses before income is stable</li>
+        <li>Letting solitude tip into full withdrawal</li>
+        <li>Major impulsive financial decisions</li>
+      </ul>
+      <h4>Remember</h4>
+      <p>2026 is the quiet before your storm. Personal Year 8 in 2027 is your power year. Use 2026 to sharpen yourself so you arrive at 2027 like a prepared blade — not scrambling to catch up.</p>
+    `
+  }
+};
+
+function showTab(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function openModal(key) {
+  const m = modals[key];
+  if (!m) return;
+  document.getElementById('modal-number').textContent = m.number;
+  document.getElementById('modal-number').style.color = m.color;
+  document.getElementById('modal-title').textContent = m.title;
+  document.getElementById('modal-body').innerHTML = m.body;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+}
+
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+function toggleYear(id) {
+  const body = document.getElementById(id);
+  body.classList.toggle('open');
+}
+</script>
+</body>
+</html>
