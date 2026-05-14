@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aravind — Execution Plan 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0A0A0A; --surface: #111111; --surface2: #181818;
+  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.14);
+  --text: #F0EDE6; --text2: #8A8680; --text3: #4A4845;
+  --amber: #F5A623; --amber-dim: rgba(245,166,35,0.12); --amber-border: rgba(245,166,35,0.3);
+  --teal: #2DD4BF; --teal-dim: rgba(45,212,191,0.1); --teal-border: rgba(45,212,191,0.3);
+  --blue: #60A5FA; --blue-dim: rgba(96,165,250,0.1); --blue-border: rgba(96,165,250,0.3);
+  --green: #4ADE80; --green-dim: rgba(74,222,128,0.08); --green-border: rgba(74,222,128,0.3);
+  --red: #F87171; --red-dim: rgba(248,113,113,0.08); --red-border: rgba(248,113,113,0.25);
+  --dd: #FF3008; --dd-dim: rgba(255,48,8,0.1); --dd-border: rgba(255,48,8,0.3);
+  --gym: #A78BFA; --gym-dim: rgba(167,139,250,0.1); --gym-border: rgba(167,139,250,0.3);
+}
+body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+.hero {
+  padding: 2.5rem 1.75rem 2rem;
+  border-bottom: 0.5px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -80px; right: -60px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(245,166,35,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.tag {
+  display: inline-block; font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--amber); border: 0.5px solid var(--amber-border);
+  background: var(--amber-dim); padding: 3px 12px; border-radius: 999px;
+  margin-bottom: 14px; letter-spacing: 0.05em;
+}
+.hero h1 {
+  font-size: clamp(22px, 5vw, 34px); font-weight: 800;
+  line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 8px;
+}
+.hero h1 span { color: var(--amber); }
+.hero p { font-size: 13px; color: var(--text2); line-height: 1.65; max-width: 480px; }
+
+.banner {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 10px 1.75rem; background: var(--surface);
+  border-bottom: 0.5px solid var(--border);
+}
+.chip {
+  font-size: 10px; font-family: 'DM Mono', monospace;
+  padding: 3px 10px; border-radius: 999px; border: 0.5px solid;
+}
+.c-amber { background: var(--amber-dim); border-color: var(--amber-border); color: var(--amber); }
+.c-dd { background: var(--dd-dim); border-color: var(--dd-border); color: var(--dd); }
+.c-gym { background: var(--gym-dim); border-color: var(--gym-border); color: var(--gym); }
+.c-green { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+.c-red { background: var(--red-dim); border-color: var(--red-border); color: var(--red); }
+
+.main { padding: 1.5rem; max-width: 920px; margin: 0 auto; }
+
+.sec {
+  display: flex; align-items: center; gap: 10px;
+  margin: 1.75rem 0 1rem;
+}
+.sec h2 {
+  font-size: 11px; font-weight: 500; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap;
+}
+.sec::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+
+/* WEEK VISUAL */
+.week-row {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+  margin-bottom: 2rem;
+}
+@media (max-width: 580px) { .week-row { grid-template-columns: repeat(4, 1fr); } }
+
+.wday {
+  background: var(--surface); border: 0.5px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+}
+.wday-head {
+  padding: 7px 6px; text-align: center;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; border-bottom: 0.5px solid var(--border);
+}
+.wday.power .wday-head { background: var(--amber-dim); color: var(--amber); border-color: var(--amber-border); }
+.wday.dash .wday-head { background: var(--dd-dim); color: var(--dd); border-color: var(--dd-border); }
+
+.wday-pips { padding: 6px; display: flex; flex-direction: column; gap: 4px; }
+.pip {
+  font-size: 9px; font-family: 'DM Mono', monospace;
+  padding: 3px 5px; border-radius: 5px; text-align: center;
+  border: 0.5px solid; line-height: 1.3;
+}
+.pip-jobs { background: var(--amber-dim); border-color: var(--amber-border); color: var(--amber); }
+.pip-ai { background: var(--teal-dim); border-color: var(--teal-border); color: var(--teal); }
+.pip-doop { background: var(--blue-dim); border-color: var(--blue-border); color: var(--blue); }
+.pip-mkt { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+.pip-dd { background: var(--dd-dim); border-color: var(--dd-border); color: var(--dd); }
+.pip-gym { background: var(--gym-dim); border-color: var(--gym-border); color: var(--gym); }
+.pip-rest { background: rgba(255,255,255,0.02); border-color: var(--border); color: var(--text3); }
+.pip-free { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+
+/* DAY SCHEDULE BLOCKS */
+.day-card {
+  background: var(--surface); border: 0.5px solid var(--border);
+  border-radius: 14px; margin-bottom: 10px; overflow: hidden;
+}
+.day-card-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 16px; cursor: pointer;
+  border-bottom: 0.5px solid var(--border);
+  transition: background 0.15s;
+}
+.day-card-head:hover { background: var(--surface2); }
+.day-card.open .day-card-head { border-bottom-color: var(--border2); }
+
+.day-name { font-size: 14px; font-weight: 700; min-width: 150px; }
+.day-badge {
+  font-size: 10px; font-family: 'DM Mono', monospace;
+  padding: 3px 9px; border-radius: 999px; border: 0.5px solid;
+}
+.db-power { background: var(--amber-dim); border-color: var(--amber-border); color: var(--amber); }
+.db-dash { background: var(--dd-dim); border-color: var(--dd-border); color: var(--dd); }
+.db-free { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+.db-rest { background: rgba(255,255,255,0.03); border-color: var(--border); color: var(--text3); }
+
+.day-hrs { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); margin-left: auto; }
+.day-chev { font-size: 10px; color: var(--text3); transition: transform 0.2s; }
+.day-card.open .day-chev { transform: rotate(180deg); }
+
+.day-body { display: none; padding: 16px; }
+.day-card.open .day-body { display: block; }
+
+/* TIMELINE */
+.tl { display: flex; flex-direction: column; }
+.tl-row { display: flex; gap: 12px; }
+.tl-spine { display: flex; flex-direction: column; align-items: center; width: 28px; flex-shrink: 0; }
+.tl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; border: 2px solid; }
+.tl-line { width: 1px; flex: 1; background: var(--border); margin: 3px 0; min-height: 12px; }
+.tl-row:last-child .tl-line { display: none; }
+.tl-body { padding-bottom: 18px; flex: 1; }
+.tl-time { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); margin-bottom: 2px; }
+.tl-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.tl-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
+.tl-dur {
+  display: inline-block; margin-top: 5px;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  padding: 2px 8px; border-radius: 999px;
+  border: 0.5px solid var(--border); color: var(--text3);
+}
+.d-jobs { border-color: var(--amber); background: rgba(245,166,35,0.18); }
+.d-ai { border-color: var(--teal); background: rgba(45,212,191,0.15); }
+.d-doop { border-color: var(--blue); background: rgba(96,165,250,0.15); }
+.d-mkt { border-color: var(--green); background: rgba(74,222,128,0.15); }
+.d-dd { border-color: var(--dd); background: rgba(255,48,8,0.15); }
+.d-gym { border-color: var(--gym); background: rgba(167,139,250,0.15); }
+.d-break { border-color: var(--border2); background: var(--surface2); }
+
+/* BLOCKS REF */
+.blocks-ref {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 8px; margin-bottom: 2rem;
+}
+.bref {
+  background: var(--surface); border: 0.5px solid var(--border);
+  border-radius: 10px; padding: 12px 14px;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.bref-bar { width: 3px; border-radius: 999px; flex-shrink: 0; align-self: stretch; min-height: 40px; }
+.bref-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.bref-sub { font-size: 11px; color: var(--text2); line-height: 1.5; }
+
+/* ALERTS */
+.alert {
+  border-radius: 12px; padding: 1rem 1.25rem;
+  font-size: 13px; line-height: 1.7; margin-bottom: 10px;
+}
+.alert h4 { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+.al-amber { background: var(--amber-dim); border: 0.5px solid var(--amber-border); color: var(--amber); }
+.al-red { background: var(--red-dim); border: 0.5px solid var(--red-border); color: var(--red); }
+.al-teal { background: var(--teal-dim); border: 0.5px solid var(--teal-border); color: var(--teal); }
+.al-green { background: var(--green-dim); border: 0.5px solid var(--green-border); color: var(--green); }
+
+/* RULES */
+.rule {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--surface);
+  border-left: 3px solid var(--amber);
+  border-top: 0.5px solid var(--border);
+  border-right: 0.5px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
+  border-radius: 0 10px 10px 0;
+  padding: 12px 16px; margin-bottom: 8px;
+}
+.rule-n { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--amber); flex-shrink: 0; line-height: 1.1; min-width: 28px; }
+.rule-t { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+.rule-s { font-size: 12px; color: var(--text2); line-height: 1.6; }
+
+/* TRACKER TABLE */
+.tracker {
+  background: var(--surface); border: 0.5px solid var(--border);
+  border-radius: 14px; overflow: hidden; margin-bottom: 2rem;
+}
+.tr-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 16px; border-bottom: 0.5px solid var(--border);
+  font-size: 13px;
+}
+.tr-row:last-child { border-bottom: none; }
+.tr-icon { font-size: 15px; width: 24px; flex-shrink: 0; }
+.tr-label { flex: 1; font-weight: 500; }
+.tr-detail { font-size: 11px; color: var(--text2); font-family: 'DM Mono', monospace; }
+
+footer {
+  text-align: center; padding: 2rem;
+  font-size: 11px; color: var(--text3);
+  font-family: 'DM Mono', monospace;
+  border-top: 0.5px solid var(--border); margin-top: 1rem;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="tag">EXECUTION PLAN V3 · REAL SCHEDULE MAPPED</div>
+  <h1>Your real window is<br><span>Mon–Thu, 9am–4pm.</span></h1>
+  <p>28 hours per week. That is your entire execution budget. DoorDash, gym, and rest are locked in. Everything else fits inside these 4 mornings.</p>
+</div>
+
+<div class="banner">
+  <span class="chip c-amber">⚡ Mon–Thu 9am–4pm = 28hrs execution</span>
+  <span class="chip c-dd">🚗 Mon–Thu DoorDash 4–10pm</span>
+  <span class="chip c-dd">🚗 Fri · Sat · Sun DoorDash 8am–1pm</span>
+  <span class="chip c-gym">💪 Gym 1hr daily — fit between blocks</span>
+  <span class="chip c-green">✓ Fri–Sun afternoon = light tasks + rest</span>
+</div>
+
+<div class="main">
+
+  <!-- WEEKLY VISUAL -->
+  <div class="sec"><h2>Week at a glance</h2></div>
+  <div class="week-row">
+    <div class="wday power">
+      <div class="wday-head">Mon</div>
+      <div class="wday-pips">
+        <div class="pip pip-jobs">Jobs 120m</div>
+        <div class="pip pip-ai">AI 90m</div>
+        <div class="pip pip-mkt">Mkt 30m</div>
+        <div class="pip pip-gym">Gym</div>
+        <div class="pip pip-dd">DoorDash</div>
+      </div>
+    </div>
+    <div class="wday power">
+      <div class="wday-head">Tue</div>
+      <div class="wday-pips">
+        <div class="pip pip-jobs">Jobs 90m</div>
+        <div class="pip pip-doop">Doop 120m</div>
+        <div class="pip pip-ai">AI 60m</div>
+        <div class="pip pip-gym">Gym</div>
+        <div class="pip pip-dd">DoorDash</div>
+      </div>
+    </div>
+    <div class="wday power">
+      <div class="wday-head">Wed</div>
+      <div class="wday-pips">
+        <div class="pip pip-jobs">Jobs 120m</div>
+        <div class="pip pip-ai">AI 90m</div>
+        <div class="pip pip-mkt">Mkt 30m</div>
+        <div class="pip pip-gym">Gym</div>
+        <div class="pip pip-dd">DoorDash</div>
+      </div>
+    </div>
+    <div class="wday power">
+      <div class="wday-head">Thu</div>
+      <div class="wday-pips">
+        <div class="pip pip-jobs">Jobs 90m</div>
+        <div class="pip pip-doop">Doop 120m</div>
+        <div class="pip pip-ai">AI 60m</div>
+        <div class="pip pip-gym">Gym</div>
+        <div class="pip pip-dd">DoorDash</div>
+      </div>
+    </div>
+    <div class="wday dash">
+      <div class="wday-head">Fri</div>
+      <div class="wday-pips">
+        <div class="pip pip-dd">DoorDash</div>
+        <div class="pip pip-free">Follow-ups</div>
+        <div class="pip pip-rest">Rest</div>
+      </div>
+    </div>
+    <div class="wday dash">
+      <div class="wday-head">Sat</div>
+      <div class="wday-pips">
+        <div class="pip pip-dd">DoorDash</div>
+        <div class="pip pip-free">Week review</div>
+        <div class="pip pip-rest">Rest</div>
+      </div>
+    </div>
+    <div class="wday dash">
+      <div class="wday-head">Sun</div>
+      <div class="wday-pips">
+        <div class="pip pip-dd">DoorDash</div>
+        <div class="pip pip-rest">Full rest</div>
+        <div class="pip pip-rest">Recharge</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCKS REFERENCE -->
+  <div class="sec"><h2>Four blocks</h2></div>
+  <div class="blocks-ref">
+    <div class="bref">
+      <div class="bref-bar" style="background:var(--amber);"></div>
+      <div>
+        <div class="bref-title" style="color:var(--amber);">Block 1 — Applying Jobs</div>
+        <div class="bref-sub">10+ apps daily. Track everything. Follow up at 7 days. Respond to recruiters in 2 hours. Always runs first.</div>
+      </div>
+    </div>
+    <div class="bref">
+      <div class="bref-bar" style="background:var(--teal);"></div>
+      <div>
+        <div class="bref-title" style="color:var(--teal);">Block 2 — Learning AI</div>
+        <div class="bref-sub">40% course, 60% building. Push code to GitHub every session. No passive watching days.</div>
+      </div>
+    </div>
+    <div class="bref">
+      <div class="bref-bar" style="background:var(--blue);"></div>
+      <div>
+        <div class="bref-title" style="color:var(--blue);">Block 3 — Building Doop</div>
+        <div class="bref-sub">Tue + Thu only. Follow phase roadmap. Phase 1 first — no skipping ahead.</div>
+      </div>
+    </div>
+    <div class="bref">
+      <div class="bref-bar" style="background:var(--green);"></div>
+      <div>
+        <div class="bref-title" style="color:var(--green);">Block 4 — Marketing +</div>
+        <div class="bref-sub">5 recruiter outreaches. 5 LinkedIn connections. One post per week. arvindjtta.com.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEDULES -->
+  <div class="sec"><h2>Daily schedules — click to expand</h2></div>
+
+  <!-- MON + WED -->
+  <div class="day-card open" id="d-mw">
+    <div class="day-card-head" onclick="tog('d-mw')">
+      <div class="day-name">Monday + Wednesday</div>
+      <div class="day-badge db-power">⚡ Power day</div>
+      <div class="day-hrs">~6 hrs work</div>
+      <div class="day-chev">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tl">
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-jobs"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">9:00 AM</div>
+            <div class="tl-title" style="color:var(--amber);">Block 1 — Applying Jobs</div>
+            <div class="tl-desc">10+ applications. Tailor resume per role. Log every single one in your tracker spreadsheet. No tracker entry = it didn't happen.</div>
+            <div class="tl-dur">120 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">11:00 AM</div>
+            <div class="tl-title" style="color:var(--text3);">Break — walk outside</div>
+            <div class="tl-desc">No phone. No content. Just move. Your 7 brain needs the reset.</div>
+            <div class="tl-dur">20 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-ai"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">11:20 AM</div>
+            <div class="tl-title" style="color:var(--teal);">Block 2 — Learning AI</div>
+            <div class="tl-desc">Watch 30–40 mins of course. Spend remaining time writing code from it. Push to GitHub before this block ends.</div>
+            <div class="tl-dur">90 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">12:50 PM</div>
+            <div class="tl-title" style="color:var(--text3);">Lunch</div>
+            <div class="tl-desc">Eat properly. Full stop.</div>
+            <div class="tl-dur">40 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-jobs"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">1:30 PM</div>
+            <div class="tl-title" style="color:var(--amber);">Block 1 continued — Follow-ups + recruiter responses</div>
+            <div class="tl-desc">Follow up on all apps older than 7 days. Respond to any recruiter messages. Search new postings. Check tracker for gaps.</div>
+            <div class="tl-dur">60 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-mkt"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">2:30 PM</div>
+            <div class="tl-title" style="color:var(--green);">Block 4 — Marketing +</div>
+            <div class="tl-desc">5 recruiter outreaches on LinkedIn. 5 engineer connections at target companies. One LinkedIn post (Wed only).</div>
+            <div class="tl-dur">30 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-gym"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">3:00 PM</div>
+            <div class="tl-title" style="color:var(--gym);">Gym</div>
+            <div class="tl-desc">Physical anchor for your 7 energy. Non-negotiable. Gets you mentally ready for DoorDash shift.</div>
+            <div class="tl-dur">60 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-dd"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">4:00 PM</div>
+            <div class="tl-title" style="color:var(--dd);">DoorDash</div>
+            <div class="tl-desc">Income. Visa. Loan. This is the foundation paying for everything else right now. Respect it.</div>
+            <div class="tl-dur">6 hrs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TUE + THU -->
+  <div class="day-card" id="d-tt">
+    <div class="day-card-head" onclick="tog('d-tt')">
+      <div class="day-name">Tuesday + Thursday</div>
+      <div class="day-badge db-power">⚡ Build day</div>
+      <div class="day-hrs">~6 hrs work</div>
+      <div class="day-chev">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tl">
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-jobs"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">9:00 AM</div>
+            <div class="tl-title" style="color:var(--amber);">Block 1 — Applying Jobs</div>
+            <div class="tl-desc">10+ applications. Log all in tracker. Tailor resume. Respond to any recruiter messages immediately — 2 hour rule.</div>
+            <div class="tl-dur">90 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">10:30 AM</div>
+            <div class="tl-title" style="color:var(--text3);">Break</div>
+            <div class="tl-desc">Short walk. Reset for deep work session ahead.</div>
+            <div class="tl-dur">15 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-doop"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">10:45 AM</div>
+            <div class="tl-title" style="color:var(--blue);">Block 3 — Building Doop</div>
+            <div class="tl-desc">Deep focus. Phone away. Follow the phase roadmap — Phase 1 only until complete. Commit and push everything before block ends.</div>
+            <div class="tl-dur">120 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">12:45 PM</div>
+            <div class="tl-title" style="color:var(--text3);">Lunch</div>
+            <div class="tl-desc">Eat properly.</div>
+            <div class="tl-dur">30 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-ai"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">1:15 PM</div>
+            <div class="tl-title" style="color:var(--teal);">Block 2 — Learning AI</div>
+            <div class="tl-desc">Apply what you are learning directly to Doop where possible. Build + watch. Push to GitHub.</div>
+            <div class="tl-dur">60 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-gym"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">2:15 PM</div>
+            <div class="tl-title" style="color:var(--gym);">Gym</div>
+            <div class="tl-desc">Physical grounding. Keeps the 7 mind from spiralling after intense build sessions.</div>
+            <div class="tl-dur">60 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-dd"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">4:00 PM</div>
+            <div class="tl-title" style="color:var(--dd);">DoorDash</div>
+            <div class="tl-desc">6 hours. Income for the visa runway. Respect the grind.</div>
+            <div class="tl-dur">6 hrs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRI -->
+  <div class="day-card" id="d-fri">
+    <div class="day-card-head" onclick="tog('d-fri')">
+      <div class="day-name">Friday</div>
+      <div class="day-badge db-dash">🚗 DoorDash morning</div>
+      <div class="day-hrs">Light afternoon</div>
+      <div class="day-chev">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tl">
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-dd"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">8:00 AM</div>
+            <div class="tl-title" style="color:var(--dd);">DoorDash</div>
+            <div class="tl-desc">Morning income shift.</div>
+            <div class="tl-dur">5 hrs</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-jobs"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">1:30 PM</div>
+            <div class="tl-title" style="color:var(--amber);">Light jobs follow-up only</div>
+            <div class="tl-desc">Check for recruiter replies. Follow up on any pending applications. No new applications required — just maintenance.</div>
+            <div class="tl-dur">30 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">2:00 PM</div>
+            <div class="tl-title" style="color:var(--text3);">Rest</div>
+            <div class="tl-desc">You worked hard Mon–Thu. Protect the afternoon. Your Life Path 7 needs genuine downtime — not guilty scrolling.</div>
+            <div class="tl-dur">Rest</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAT -->
+  <div class="day-card" id="d-sat">
+    <div class="day-card-head" onclick="tog('d-sat')">
+      <div class="day-name">Saturday</div>
+      <div class="day-badge db-dash">🚗 DoorDash morning</div>
+      <div class="day-hrs">Weekly reset</div>
+      <div class="day-chev">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tl">
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-dd"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">8:00 AM</div>
+            <div class="tl-title" style="color:var(--dd);">DoorDash</div>
+            <div class="tl-desc">Morning income shift.</div>
+            <div class="tl-dur">5 hrs</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-jobs"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">1:30 PM</div>
+            <div class="tl-title" style="color:var(--amber);">Weekly reset — 30 minutes</div>
+            <div class="tl-desc">Open your tracker. Count total applications this week. Follow up on anything at 7 days. Write down: one thing avoided, one priority for next week. That is it.</div>
+            <div class="tl-dur">30 min</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">2:00 PM</div>
+            <div class="tl-title" style="color:var(--text3);">Rest</div>
+            <div class="tl-desc">Full afternoon off.</div>
+            <div class="tl-dur">Rest</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUN -->
+  <div class="day-card" id="d-sun">
+    <div class="day-card-head" onclick="tog('d-sun')">
+      <div class="day-name">Sunday</div>
+      <div class="day-badge db-rest">Full rest</div>
+      <div class="day-hrs">Recharge</div>
+      <div class="day-chev">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tl">
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-dd"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">8:00 AM</div>
+            <div class="tl-title" style="color:var(--dd);">DoorDash</div>
+            <div class="tl-desc">Morning income shift.</div>
+            <div class="tl-dur">5 hrs</div>
+          </div>
+        </div>
+        <div class="tl-row">
+          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
+          <div class="tl-body">
+            <div class="tl-time">1:00 PM</div>
+            <div class="tl-title" style="color:var(--text3);">Complete rest</div>
+            <div class="tl-desc">No applications. No building. No LinkedIn. No guilt. Your Life Path 7 running on empty produces bad decisions and worse code. Sunday is maintenance for the rest of the week.</div>
+            <div class="tl-dur">Rest</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION TRACKER -->
+  <div class="sec"><h2>Application tracker — build in Google Sheets today</h2></div>
+  <div class="tracker">
+    <div class="tr-row"><div class="tr-icon">🏢</div><div class="tr-label">Company name</div><div class="tr-detail">who you applied to</div></div>
+    <div class="tr-row"><div class="tr-icon">💼</div><div class="tr-label">Role title</div><div class="tr-detail">exact job title</div></div>
+    <div class="tr-row"><div class="tr-icon">📅</div><div class="tr-label">Date applied</div><div class="tr-detail">for follow-up timing</div></div>
+    <div class="tr-row"><div class="tr-icon">🔗</div><div class="tr-label">Job URL</div><div class="tr-detail">reference the JD in interviews</div></div>
+    <div class="tr-row"><div class="tr-icon">📊</div><div class="tr-label">Status</div><div class="tr-detail">Applied / Replied / Interview / Rejected / Offer</div></div>
+    <div class="tr-row"><div class="tr-icon">🔔</div><div class="tr-label">Follow-up date</div><div class="tr-detail">date applied + 7 days</div></div>
+    <div class="tr-row"><div class="tr-icon">📝</div><div class="tr-label">Notes</div><div class="tr-detail">recruiter name, anything relevant</div></div>
+  </div>
+
+  <!-- WEEKLY NUMBERS -->
+  <div class="sec"><h2>Your weekly targets</h2></div>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:8px; margin-bottom:2rem;">
+    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+      <div style="font-size:28px;font-weight:800;color:var(--amber);line-height:1;">50+</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:4px;">applications per week</div>
+    </div>
+    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+      <div style="font-size:28px;font-weight:800;color:var(--teal);line-height:1;">25+</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:4px;">LinkedIn connections</div>
+    </div>
+    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+      <div style="font-size:28px;font-weight:800;color:var(--blue);line-height:1;">4</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:4px;">Doop build sessions</div>
+    </div>
+    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+      <div style="font-size:28px;font-weight:800;color:var(--green);line-height:1;">1</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:4px;">LinkedIn post</div>
+    </div>
+    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
+      <div style="font-size:28px;font-weight:800;color:var(--gym);line-height:1;">4</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:4px;">gym sessions minimum</div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="sec"><h2>3 non-negotiable rules</h2></div>
+  <div style="margin-bottom:2rem;">
+    <div class="rule">
+      <div class="rule-n">01</div>
+      <div>
+        <div class="rule-t">Jobs block runs first. Every Mon–Thu without exception.</div>
+        <div class="rule-s">Not after AI. Not after you feel warmed up. 9am sharp. The most urgent task gets the freshest brain. Your OPT window does not care how you feel that morning.</div>
+      </div>
+    </div>
+    <div class="rule">
+      <div class="rule-n">02</div>
+      <div>
+        <div class="rule-t">No passive AI learning. Every session ends with code on GitHub.</div>
+        <div class="rule-s">A watched course with no code written is entertainment. 10 lines of code pushed is a portfolio entry. The difference is what gets you hired.</div>
+      </div>
+    </div>
+    <div class="rule">
+      <div class="rule-n">03</div>
+      <div>
+        <div class="rule-t">Run this exact plan for 30 days before changing anything.</div>
+        <div class="rule-s">Your Karmic Debt 14 will tell you the plan needs tweaking around day 10. It does not. The plan is fine. What it needs is your follow-through, not your improvements.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALERTS -->
+  <div class="sec"><h2>Important reminders</h2></div>
+  <div class="alert al-amber">
+    <h4>⚡ Your 28 hours is everything</h4>
+    Mon–Thu 9am–4pm is your entire execution budget for the week. Treat each of these 4 mornings like a shift you cannot miss. DoorDash is locked in. Gym is locked in. These 4 windows are what stands between you and a job offer.
+  </div>
+  <div class="alert al-teal">
+    <h4>✓ DoorDash is not the enemy</h4>
+    DoorDash is funding your visa runway right now. Without it, the loan pressure would corrupt every decision you make. Respect what it is doing for you while you build the exit from it.
+  </div>
+  <div class="alert al-green">
+    <h4>💪 Gym protects the plan</h4>
+    Your Life Path 7 under Personal Year 7 will generate intense mental energy. Without a physical outlet that energy becomes anxiety and overthinking. Gym is not optional — it is maintenance for your most important tool, which is your mind.
+  </div>
+  <div class="alert al-red">
+    <h4>⚠ Karmic Debt 14 watch</h4>
+    Around day 10–12, Doop will feel more exciting than applications. A new idea may appear. The AI course will feel more urgent than the job search. This is the pattern — it is completely predictable. Name it when it happens and return to Block 1 immediately. The only thing that breaks the 14 is finishing what you started.
+  </div>
+
+</div>
+
+<footer>Aravind Reddy Jitta · Execution Plan V3 · Life Path 7 · Personal Year 7 · 2026</footer>
+
+<script>
+function tog(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+</script>
+</body>
+</html>
