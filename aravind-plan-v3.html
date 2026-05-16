@@ -1,720 +1,605 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aravind — Execution Plan 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Aravind — Execution Plan V4</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg: #0A0A0A; --surface: #111111; --surface2: #181818;
-  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.14);
-  --text: #F0EDE6; --text2: #8A8680; --text3: #4A4845;
-  --amber: #F5A623; --amber-dim: rgba(245,166,35,0.12); --amber-border: rgba(245,166,35,0.3);
-  --teal: #2DD4BF; --teal-dim: rgba(45,212,191,0.1); --teal-border: rgba(45,212,191,0.3);
-  --blue: #60A5FA; --blue-dim: rgba(96,165,250,0.1); --blue-border: rgba(96,165,250,0.3);
-  --green: #4ADE80; --green-dim: rgba(74,222,128,0.08); --green-border: rgba(74,222,128,0.3);
-  --red: #F87171; --red-dim: rgba(248,113,113,0.08); --red-border: rgba(248,113,113,0.25);
-  --dd: #FF3008; --dd-dim: rgba(255,48,8,0.1); --dd-border: rgba(255,48,8,0.3);
-  --gym: #A78BFA; --gym-dim: rgba(167,139,250,0.1); --gym-border: rgba(167,139,250,0.3);
-}
-body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-.hero {
-  padding: 2.5rem 1.75rem 2rem;
-  border-bottom: 0.5px solid var(--border);
-  position: relative; overflow: hidden;
+[data-theme="dark"] {
+  --bg:         #0f1117;
+  --bg2:        #161b27;
+  --surface:    #1c2232;
+  --surface2:   #222840;
+  --border:     #2a3248;
+  --border2:    #33405e;
+  --text:       #e8eaf0;
+  --text2:      #9aa3b8;
+  --text3:      #5c6882;
+  --accent:     #4f8ef7;
+  --accent-bg:  rgba(79,142,247,0.12);
+  --accent2:    #f97316;
+  --accent2-bg: rgba(249,115,22,0.12);
+  --green:      #34d399;
+  --green-bg:   rgba(52,211,153,0.1);
+  --purple:     #a78bfa;
+  --purple-bg:  rgba(167,139,250,0.1);
+  --red:        #f87171;
+  --red-bg:     rgba(248,113,113,0.1);
+  --shadow:     0 1px 3px rgba(0,0,0,0.4);
 }
-.hero::before {
-  content: ''; position: absolute; top: -80px; right: -60px;
-  width: 280px; height: 280px;
-  background: radial-gradient(circle, rgba(245,166,35,0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-.tag {
-  display: inline-block; font-family: 'DM Mono', monospace; font-size: 11px;
-  color: var(--amber); border: 0.5px solid var(--amber-border);
-  background: var(--amber-dim); padding: 3px 12px; border-radius: 999px;
-  margin-bottom: 14px; letter-spacing: 0.05em;
-}
-.hero h1 {
-  font-size: clamp(22px, 5vw, 34px); font-weight: 800;
-  line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 8px;
-}
-.hero h1 span { color: var(--amber); }
-.hero p { font-size: 13px; color: var(--text2); line-height: 1.65; max-width: 480px; }
 
-.banner {
-  display: flex; flex-wrap: wrap; gap: 6px;
-  padding: 10px 1.75rem; background: var(--surface);
-  border-bottom: 0.5px solid var(--border);
+[data-theme="light"] {
+  --bg:         #f5f7fc;
+  --bg2:        #ebeef8;
+  --surface:    #ffffff;
+  --surface2:   #f0f3fb;
+  --border:     #dde2f0;
+  --border2:    #c5cce8;
+  --text:       #1a1f36;
+  --text2:      #4a5580;
+  --text3:      #8a93b8;
+  --accent:     #2563eb;
+  --accent-bg:  rgba(37,99,235,0.08);
+  --accent2:    #ea580c;
+  --accent2-bg: rgba(234,88,12,0.08);
+  --green:      #059669;
+  --green-bg:   rgba(5,150,105,0.08);
+  --purple:     #7c3aed;
+  --purple-bg:  rgba(124,58,237,0.08);
+  --red:        #dc2626;
+  --red-bg:     rgba(220,38,38,0.08);
+  --shadow:     0 1px 3px rgba(0,0,0,0.08);
 }
-.chip {
-  font-size: 10px; font-family: 'DM Mono', monospace;
-  padding: 3px 10px; border-radius: 999px; border: 0.5px solid;
-}
-.c-amber { background: var(--amber-dim); border-color: var(--amber-border); color: var(--amber); }
-.c-dd { background: var(--dd-dim); border-color: var(--dd-border); color: var(--dd); }
-.c-gym { background: var(--gym-dim); border-color: var(--gym-border); color: var(--gym); }
-.c-green { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
-.c-red { background: var(--red-dim); border-color: var(--red-border); color: var(--red); }
 
-.main { padding: 1.5rem; max-width: 920px; margin: 0 auto; }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
 
-.sec {
-  display: flex; align-items: center; gap: 10px;
-  margin: 1.75rem 0 1rem;
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+  transition: background 0.25s, color 0.25s;
 }
-.sec h2 {
-  font-size: 11px; font-weight: 500; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap;
-}
-.sec::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
 
-/* WEEK VISUAL */
-.week-row {
-  display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
-  margin-bottom: 2rem;
-}
-@media (max-width: 580px) { .week-row { grid-template-columns: repeat(4, 1fr); } }
+.wrap { max-width: 860px; margin: 0 auto; padding: 52px 24px 100px; }
 
-.wday {
-  background: var(--surface); border: 0.5px solid var(--border);
-  border-radius: 12px; overflow: hidden;
+/* TOGGLE */
+.toggle {
+  position: fixed; top: 20px; right: 20px; z-index: 100;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 50px; padding: 7px 16px; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--text2);
+  display: flex; align-items: center; gap: 6px;
+  box-shadow: var(--shadow); transition: all 0.2s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
-.wday-head {
-  padding: 7px 6px; text-align: center;
-  font-size: 10px; font-weight: 700; letter-spacing: 0.05em;
-  text-transform: uppercase; border-bottom: 0.5px solid var(--border);
-}
-.wday.power .wday-head { background: var(--amber-dim); color: var(--amber); border-color: var(--amber-border); }
-.wday.dash .wday-head { background: var(--dd-dim); color: var(--dd); border-color: var(--dd-border); }
+.toggle:hover { border-color: var(--accent); color: var(--accent); }
 
-.wday-pips { padding: 6px; display: flex; flex-direction: column; gap: 4px; }
-.pip {
-  font-size: 9px; font-family: 'DM Mono', monospace;
-  padding: 3px 5px; border-radius: 5px; text-align: center;
-  border: 0.5px solid; line-height: 1.3;
-}
-.pip-jobs { background: var(--amber-dim); border-color: var(--amber-border); color: var(--amber); }
-.pip-ai { background: var(--teal-dim); border-color: var(--teal-border); color: var(--teal); }
-.pip-doop { background: var(--blue-dim); border-color: var(--blue-border); color: var(--blue); }
-.pip-mkt { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
-.pip-dd { background: var(--dd-dim); border-color: var(--dd-border); color: var(--dd); }
-.pip-gym { background: var(--gym-dim); border-color: var(--gym-border); color: var(--gym); }
-.pip-rest { background: rgba(255,255,255,0.02); border-color: var(--border); color: var(--text3); }
-.pip-free { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+/* HEADER */
+.hdr { margin-bottom: 52px; animation: up 0.5s ease both; }
 
-/* DAY SCHEDULE BLOCKS */
-.day-card {
-  background: var(--surface); border: 0.5px solid var(--border);
-  border-radius: 14px; margin-bottom: 10px; overflow: hidden;
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.bdg {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; padding: 4px 12px; border-radius: 50px;
 }
-.day-card-head {
-  display: flex; align-items: center; gap: 10px;
-  padding: 13px 16px; cursor: pointer;
-  border-bottom: 0.5px solid var(--border);
-  transition: background 0.15s;
-}
-.day-card-head:hover { background: var(--surface2); }
-.day-card.open .day-card-head { border-bottom-color: var(--border2); }
+.bdg.b { background: var(--accent-bg); color: var(--accent); }
+.bdg.o { background: var(--accent2-bg); color: var(--accent2); }
+.bdg.g { background: var(--green-bg); color: var(--green); }
 
-.day-name { font-size: 14px; font-weight: 700; min-width: 150px; }
-.day-badge {
-  font-size: 10px; font-family: 'DM Mono', monospace;
-  padding: 3px 9px; border-radius: 999px; border: 0.5px solid;
+.hdr h1 {
+  font-size: clamp(34px, 6vw, 54px); font-weight: 800;
+  line-height: 1.06; letter-spacing: -0.03em; margin-bottom: 10px;
 }
-.db-power { background: var(--amber-dim); border-color: var(--amber-border); color: var(--amber); }
-.db-dash { background: var(--dd-dim); border-color: var(--dd-border); color: var(--dd); }
-.db-free { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
-.db-rest { background: rgba(255,255,255,0.03); border-color: var(--border); color: var(--text3); }
+.hdr h1 em { font-style: normal; color: var(--accent); }
+.hdr p { font-size: 15px; color: var(--text2); font-weight: 500; margin-bottom: 28px; }
 
-.day-hrs { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); margin-left: auto; }
-.day-chev { font-size: 10px; color: var(--text3); transition: transform 0.2s; }
-.day-card.open .day-chev { transform: rotate(180deg); }
-
-.day-body { display: none; padding: 16px; }
-.day-card.open .day-body { display: block; }
-
-/* TIMELINE */
-.tl { display: flex; flex-direction: column; }
-.tl-row { display: flex; gap: 12px; }
-.tl-spine { display: flex; flex-direction: column; align-items: center; width: 28px; flex-shrink: 0; }
-.tl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; border: 2px solid; }
-.tl-line { width: 1px; flex: 1; background: var(--border); margin: 3px 0; min-height: 12px; }
-.tl-row:last-child .tl-line { display: none; }
-.tl-body { padding-bottom: 18px; flex: 1; }
-.tl-time { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); margin-bottom: 2px; }
-.tl-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
-.tl-desc { font-size: 12px; color: var(--text2); line-height: 1.55; }
-.tl-dur {
-  display: inline-block; margin-top: 5px;
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  padding: 2px 8px; border-radius: 999px;
-  border: 0.5px solid var(--border); color: var(--text3);
+.stats {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  background: var(--border); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden; gap: 1px;
+  box-shadow: var(--shadow);
 }
-.d-jobs { border-color: var(--amber); background: rgba(245,166,35,0.18); }
-.d-ai { border-color: var(--teal); background: rgba(45,212,191,0.15); }
-.d-doop { border-color: var(--blue); background: rgba(96,165,250,0.15); }
-.d-mkt { border-color: var(--green); background: rgba(74,222,128,0.15); }
-.d-dd { border-color: var(--dd); background: rgba(255,48,8,0.15); }
-.d-gym { border-color: var(--gym); background: rgba(167,139,250,0.15); }
-.d-break { border-color: var(--border2); background: var(--surface2); }
+.stat { background: var(--surface); padding: 16px 20px; }
+.stat-l { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 4px; }
+.stat-v { font-size: 14px; font-weight: 700; color: var(--accent); }
 
-/* BLOCKS REF */
-.blocks-ref {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 8px; margin-bottom: 2rem;
+/* SECTION */
+.sec { margin-bottom: 52px; animation: up 0.5s ease both; }
+.sec-hdr { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.sec-ico {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: var(--accent-bg); display: flex;
+  align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
 }
-.bref {
-  background: var(--surface); border: 0.5px solid var(--border);
-  border-radius: 10px; padding: 12px 14px;
-  display: flex; gap: 10px; align-items: flex-start;
-}
-.bref-bar { width: 3px; border-radius: 999px; flex-shrink: 0; align-self: stretch; min-height: 40px; }
-.bref-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
-.bref-sub { font-size: 11px; color: var(--text2); line-height: 1.5; }
+.sec-ico.o { background: var(--accent2-bg); }
+.sec-t { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+.sec-s { font-size: 13px; color: var(--text3); font-weight: 500; margin-top: 1px; }
 
-/* ALERTS */
-.alert {
-  border-radius: 12px; padding: 1rem 1.25rem;
-  font-size: 13px; line-height: 1.7; margin-bottom: 10px;
+/* STACK */
+.stack { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.scard {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px; box-shadow: var(--shadow);
+  transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden;
 }
-.alert h4 { font-size: 13px; font-weight: 700; margin-bottom: 5px; }
-.al-amber { background: var(--amber-dim); border: 0.5px solid var(--amber-border); color: var(--amber); }
-.al-red { background: var(--red-dim); border: 0.5px solid var(--red-border); color: var(--red); }
-.al-teal { background: var(--teal-dim); border: 0.5px solid var(--teal-border); color: var(--teal); }
-.al-green { background: var(--green-dim); border: 0.5px solid var(--green-border); color: var(--green); }
+.scard:hover { border-color: var(--accent); transform: translateY(-2px); }
+.scard::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.scard:nth-child(1)::before { background: var(--accent); }
+.scard:nth-child(2)::before { background: var(--accent2); }
+.scard:nth-child(3)::before { background: var(--purple); }
+.scard-n { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; font-family: 'JetBrains Mono', monospace; }
+.scard-t { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.scard-d { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* PHASES */
+.phases { display: flex; flex-direction: column; gap: 12px; }
+.phase {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px 28px;
+  display: grid; grid-template-columns: 140px 1fr; gap: 28px;
+  box-shadow: var(--shadow); transition: border-color 0.2s;
+}
+.phase:hover { border-color: var(--border2); }
+.phase-l { border-right: 1px solid var(--border); padding-right: 28px; }
+.phase-mo { font-size: 28px; font-weight: 800; color: var(--accent); line-height: 1; letter-spacing: -0.02em; margin-bottom: 4px; font-family: 'JetBrains Mono', monospace; }
+.phase-nm { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin-bottom: 10px; }
+.abadge { display:inline-flex; font-size:11px; font-weight:700; padding: 3px 10px; border-radius:50px; }
+.abadge.no  { background: var(--red-bg);   color: var(--red); }
+.abadge.low { background: var(--green-bg); color: var(--green); }
+.abadge.hi  { background: var(--accent-bg);color: var(--accent); }
+.phase-r h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.01em; }
+.plist { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+.plist li { font-size: 14px; color: var(--text2); display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; }
+.plist li::before { content:'→'; color: var(--accent); flex-shrink:0; font-weight:600; margin-top:1px; }
+
+/* DOOP */
+.doop-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.doop-hdr {
+  background: var(--accent2-bg); border-bottom: 1px solid var(--border);
+  padding: 18px 24px; display: flex; align-items: center; gap: 14px;
+}
+.doop-ico {
+  width: 40px; height: 40px; background: var(--accent2-bg);
+  border: 1px solid rgba(249,115,22,0.3); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.doop-t { font-size: 18px; font-weight: 800; color: var(--accent2); }
+.doop-s { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.drow { display: grid; grid-template-columns: 90px 1fr; border-bottom: 1px solid var(--border); }
+.drow:last-child { border-bottom: none; }
+.drow-m { padding: 15px 24px; border-right: 1px solid var(--border); font-size: 12px; font-weight: 700; color: var(--accent2); font-family:'JetBrains Mono',monospace; letter-spacing:0.05em; display:flex; align-items:center; }
+.drow-t { padding: 15px 24px; font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+/* SCHEDULE */
+.sched { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.dcard { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: var(--shadow); }
+.dcard-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.dcard-nm { font-size: 14px; font-weight: 700; }
+.dtag { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.06em; }
+.dtag.pw { background: var(--accent-bg);  color: var(--accent); }
+.dtag.bu { background: var(--accent2-bg); color: var(--accent2); }
+.dtag.li { background: var(--green-bg);   color: var(--green); }
+.dtag.re { background: var(--purple-bg);  color: var(--purple); }
+.trows { display: flex; flex-direction: column; gap: 7px; }
+.trow { display: flex; align-items: center; gap: 10px; }
+.tt { font-size: 11px; color: var(--text3); min-width: 40px; font-family:'JetBrains Mono',monospace; }
+.pl { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
+.pl.ts  { background: var(--accent-bg);  color: var(--accent); }
+.pl.dp  { background: var(--accent2-bg); color: var(--accent2); }
+.pl.ap  { background: var(--green-bg);   color: var(--green); }
+.pl.mk  { background: var(--purple-bg);  color: var(--purple); }
+.pl.rt  { background: var(--surface2);   color: var(--text3); }
+.pl.da  { background: var(--surface2);   color: var(--text3); font-style: italic; }
+
+/* TABLE */
+.tbl { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.tbl-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr; border-bottom: 1px solid var(--border); }
+.tbl-row:last-child { border-bottom: none; }
+.tbl-c { padding: 13px 20px; font-size: 14px; border-right: 1px solid var(--border); }
+.tbl-c:last-child { border-right: none; }
+.tbl-row.th .tbl-c { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); background: var(--surface2); }
+.tbl-row:not(.th) .tbl-c:first-child { color: var(--text2); }
+.tbl-row:not(.th) .tbl-c:not(:first-child) { color: var(--accent); font-weight: 600; font-size: 13px; }
+
+/* TRACKER */
+.tgrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.tcard { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; box-shadow: var(--shadow); }
+.tcard-e { font-size: 22px; margin-bottom: 10px; }
+.tcard-n { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.tcard-d { font-size: 13px; color: var(--text2); line-height: 1.6; }
 
 /* RULES */
+.rules { display: flex; flex-direction: column; gap: 10px; }
 .rule {
-  display: flex; gap: 14px; align-items: flex-start;
-  background: var(--surface);
-  border-left: 3px solid var(--amber);
-  border-top: 0.5px solid var(--border);
-  border-right: 0.5px solid var(--border);
-  border-bottom: 0.5px solid var(--border);
-  border-radius: 0 10px 10px 0;
-  padding: 12px 16px; margin-bottom: 8px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 20px 24px; display: grid; grid-template-columns: 44px 1fr; gap: 16px;
+  align-items: start; box-shadow: var(--shadow); transition: border-color 0.2s;
 }
-.rule-n { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--amber); flex-shrink: 0; line-height: 1.1; min-width: 28px; }
-.rule-t { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-.rule-s { font-size: 12px; color: var(--text2); line-height: 1.6; }
+.rule:hover { border-color: var(--accent); }
+.rule-n {
+  width: 36px; height: 36px; border-radius: 9px; background: var(--accent-bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: var(--accent);
+  font-family:'JetBrains Mono',monospace; flex-shrink: 0;
+}
+.rule-t { font-size: 15px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+.rule-d { font-size: 14px; color: var(--text2); line-height: 1.7; }
+.rule-d strong { color: var(--text); font-weight: 600; }
 
-/* TRACKER TABLE */
-.tracker {
-  background: var(--surface); border: 0.5px solid var(--border);
-  border-radius: 14px; overflow: hidden; margin-bottom: 2rem;
+/* WARNINGS */
+.warns { display: flex; flex-direction: column; gap: 10px; }
+.warn {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent2); border-radius: 0 12px 12px 0;
+  padding: 16px 20px; display: flex; gap: 14px; align-items: flex-start;
+  box-shadow: var(--shadow);
 }
-.tr-row {
-  display: flex; align-items: center; gap: 12px;
-  padding: 11px 16px; border-bottom: 0.5px solid var(--border);
-  font-size: 13px;
-}
-.tr-row:last-child { border-bottom: none; }
-.tr-icon { font-size: 15px; width: 24px; flex-shrink: 0; }
-.tr-label { flex: 1; font-weight: 500; }
-.tr-detail { font-size: 11px; color: var(--text2); font-family: 'DM Mono', monospace; }
+.warn-i { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.warn-t { font-size: 14px; color: var(--text2); line-height: 1.7; }
+.warn-t strong { color: var(--text); font-weight: 600; }
 
-footer {
-  text-align: center; padding: 2rem;
-  font-size: 11px; color: var(--text3);
-  font-family: 'DM Mono', monospace;
-  border-top: 0.5px solid var(--border); margin-top: 1rem;
+/* FOOTER */
+.ftr { padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.ftr-n { font-size: 14px; font-weight: 700; }
+.ftr-m { font-size: 12px; color: var(--text3); }
+
+@keyframes up { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+.sec:nth-child(1){animation-delay:0s}
+.sec:nth-child(2){animation-delay:0.07s}
+.sec:nth-child(3){animation-delay:0.12s}
+.sec:nth-child(4){animation-delay:0.17s}
+.sec:nth-child(5){animation-delay:0.22s}
+
+@media(max-width:640px){
+  .stats{grid-template-columns:1fr 1fr}
+  .stack{grid-template-columns:1fr}
+  .phase{grid-template-columns:1fr}
+  .phase-l{border-right:none;border-bottom:1px solid var(--border);padding-right:0;padding-bottom:16px}
+  .sched{grid-template-columns:1fr}
+  .tgrid{grid-template-columns:1fr 1fr}
+  .tbl-row{grid-template-columns:1fr 1fr}
+  .tbl-c:last-child{display:none}
+  .toggle{top:12px;right:12px}
 }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="tag">EXECUTION PLAN V3 · REAL SCHEDULE MAPPED</div>
-  <h1>Your real window is<br><span>Mon–Thu, 9am–4pm.</span></h1>
-  <p>28 hours per week. That is your entire execution budget. DoorDash, gym, and rest are locked in. Everything else fits inside these 4 mornings.</p>
-</div>
+<button class="toggle" onclick="toggleTheme()">
+  <span id="ti">☀️</span><span id="tl">Light</span>
+</button>
 
-<div class="banner">
-  <span class="chip c-amber">⚡ Mon–Thu 9am–4pm = 28hrs execution</span>
-  <span class="chip c-dd">🚗 Mon–Thu DoorDash 4–10pm</span>
-  <span class="chip c-dd">🚗 Fri · Sat · Sun DoorDash 8am–1pm</span>
-  <span class="chip c-gym">💪 Gym 1hr daily — fit between blocks</span>
-  <span class="chip c-green">✓ Fri–Sun afternoon = light tasks + rest</span>
-</div>
+<div class="wrap">
 
-<div class="main">
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="badges">
+      <span class="bdg b">V4 · 2026</span>
+      <span class="bdg o">Full-Stack RN Engineer</span>
+      <span class="bdg g">Starts May 18</span>
+    </div>
+    <h1>Aravind's<br><em>$150K Execution</em></h1>
+    <p>Kansas City → Remote · 28hrs/week · May 18 – Nov 18, 2026</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-l">Target Role</div><div class="stat-v">Full-Stack RN</div></div>
+      <div class="stat"><div class="stat-l">Salary Target</div><div class="stat-v">$130K–$150K</div></div>
+      <div class="stat"><div class="stat-l">Weekly Budget</div><div class="stat-v">28 hrs</div></div>
+      <div class="stat"><div class="stat-l">Apps Start</div><div class="stat-v">Jul 18</div></div>
+    </div>
+  </div>
 
-  <!-- WEEKLY VISUAL -->
-  <div class="sec"><h2>Week at a glance</h2></div>
-  <div class="week-row">
-    <div class="wday power">
-      <div class="wday-head">Mon</div>
-      <div class="wday-pips">
-        <div class="pip pip-jobs">Jobs 120m</div>
-        <div class="pip pip-ai">AI 90m</div>
-        <div class="pip pip-mkt">Mkt 30m</div>
-        <div class="pip pip-gym">Gym</div>
-        <div class="pip pip-dd">DoorDash</div>
-      </div>
+  <!-- CORE STACK -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <div class="sec-ico">🧱</div>
+      <div><div class="sec-t">Core Focus Stack</div><div class="sec-s">Three skills. In order. No skipping.</div></div>
     </div>
-    <div class="wday power">
-      <div class="wday-head">Tue</div>
-      <div class="wday-pips">
-        <div class="pip pip-jobs">Jobs 90m</div>
-        <div class="pip pip-doop">Doop 120m</div>
-        <div class="pip pip-ai">AI 60m</div>
-        <div class="pip pip-gym">Gym</div>
-        <div class="pip pip-dd">DoorDash</div>
+    <div class="stack">
+      <div class="scard">
+        <div class="scard-n">01 · M1–2 <span style="opacity:0.55;font-weight:400">· May 18 – Jul 18</span></div>
+        <div class="scard-t">TypeScript</div>
+        <div class="scard-d">Strict mode, generics, Zod validation. Learned by building Doop — not from a course in isolation.</div>
       </div>
-    </div>
-    <div class="wday power">
-      <div class="wday-head">Wed</div>
-      <div class="wday-pips">
-        <div class="pip pip-jobs">Jobs 120m</div>
-        <div class="pip pip-ai">AI 90m</div>
-        <div class="pip pip-mkt">Mkt 30m</div>
-        <div class="pip pip-gym">Gym</div>
-        <div class="pip pip-dd">DoorDash</div>
+      <div class="scard">
+        <div class="scard-n">02 · M3–4 <span style="opacity:0.55;font-weight:400">· Jul 18 – Sep 18</span></div>
+        <div class="scard-t">New Architecture</div>
+        <div class="scard-d">Fabric renderer, Turbo Modules, JSI. The 2026 skill gap most RN devs haven't crossed.</div>
       </div>
-    </div>
-    <div class="wday power">
-      <div class="wday-head">Thu</div>
-      <div class="wday-pips">
-        <div class="pip pip-jobs">Jobs 90m</div>
-        <div class="pip pip-doop">Doop 120m</div>
-        <div class="pip pip-ai">AI 60m</div>
-        <div class="pip pip-gym">Gym</div>
-        <div class="pip pip-dd">DoorDash</div>
-      </div>
-    </div>
-    <div class="wday dash">
-      <div class="wday-head">Fri</div>
-      <div class="wday-pips">
-        <div class="pip pip-dd">DoorDash</div>
-        <div class="pip pip-free">Follow-ups</div>
-        <div class="pip pip-rest">Rest</div>
-      </div>
-    </div>
-    <div class="wday dash">
-      <div class="wday-head">Sat</div>
-      <div class="wday-pips">
-        <div class="pip pip-dd">DoorDash</div>
-        <div class="pip pip-free">Week review</div>
-        <div class="pip pip-rest">Rest</div>
-      </div>
-    </div>
-    <div class="wday dash">
-      <div class="wday-head">Sun</div>
-      <div class="wday-pips">
-        <div class="pip pip-dd">DoorDash</div>
-        <div class="pip pip-rest">Full rest</div>
-        <div class="pip pip-rest">Recharge</div>
+      <div class="scard">
+        <div class="scard-n">03 · M5–6 <span style="opacity:0.55;font-weight:400">· Sep 18 – Nov 18</span></div>
+        <div class="scard-t">AI + Reanimated 3</div>
+        <div class="scard-d">OpenAI/Gemini integration inside Doop. UI thread animations woven naturally into features.</div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCKS REFERENCE -->
-  <div class="sec"><h2>Four blocks</h2></div>
-  <div class="blocks-ref">
-    <div class="bref">
-      <div class="bref-bar" style="background:var(--amber);"></div>
+  <!-- PHASES -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <div class="sec-ico">🗓</div>
+      <div><div class="sec-t">6 Month Phase Plan</div><div class="sec-s">Build the profile first. Apply second.</div></div>
+    </div>
+    <div class="phases">
+
+      <div class="phase">
+        <div class="phase-l">
+          <div class="phase-mo">M1–2</div>
+          <div class="phase-nm">May 18 – Jul 18</div>
+          <div class="phase-nm" style="margin-top:2px">Foundation</div>
+          <span class="abadge no" style="margin-top:8px;display:inline-flex">0 Apps</span>
+        </div>
+        <div class="phase-r">
+          <h3>Build the Profile. Zero Applications.</h3>
+          <ul class="plist">
+            <li>Retitle LinkedIn → "Full-Stack React Native Engineer" today</li>
+            <li>Rewrite resume — lead with 10,000+ users production app</li>
+            <li>Start Doop in TypeScript strict mode + New Architecture config</li>
+            <li>Learn TypeScript by building Doop, not separately</li>
+            <li>Add Zod for FastAPI ↔ Doop API validation</li>
+            <li>One LinkedIn post per week documenting the build</li>
+            <li>GitHub commit every single session — no exceptions</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-l">
+          <div class="phase-mo">M3–4</div>
+          <div class="phase-nm">Jul 18 – Sep 18</div>
+          <div class="phase-nm" style="margin-top:2px">Go Deep</div>
+          <span class="abadge low" style="margin-top:8px;display:inline-flex">5 Apps/wk</span>
+        </div>
+        <div class="phase-r">
+          <h3>New Architecture + First Applications</h3>
+          <ul class="plist">
+            <li>New Architecture deep dive — Fabric, Turbo Modules, JSI</li>
+            <li>Add Reanimated 3 animations to Doop features naturally</li>
+            <li>Doop core features complete — approaching App Store quality</li>
+            <li>5 precision applications per week — Wellfound, Underdog.io, LinkedIn</li>
+            <li>Target Series A/B startups paying $130K–$160K</li>
+            <li>Cold outreach to 3 engineering managers per week</li>
+            <li>Begin mock interviews — interviewing.io or Pramp</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-l">
+          <div class="phase-mo">M5–6</div>
+          <div class="phase-nm">Sep 18 – Nov 18</div>
+          <div class="phase-nm" style="margin-top:2px">Close Offers</div>
+          <span class="abadge hi" style="margin-top:8px;display:inline-flex">10 Apps/wk</span>
+        </div>
+        <div class="phase-r">
+          <h3>AI Layer + App Store + Aggressive Apply</h3>
+          <ul class="plist">
+            <li>Add AI API integration (OpenAI/Gemini) into Doop</li>
+            <li>Submit Doop to App Store — live app on resume</li>
+            <li>tRPC basics — 2 weeks only, not a deep dive</li>
+            <li>10 precision applications per week</li>
+            <li>Ask for referrals from your network at target companies</li>
+            <li>Negotiate hard — New Architecture knowledge is rare</li>
+            <li>Target $130K–$145K to land fast, jump in 12 months</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DOOP -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <div class="sec-ico o">📱</div>
+      <div><div class="sec-t">Doop — Figma to App Store</div><div class="sec-s">Your single most powerful career asset</div></div>
+    </div>
+    <div class="doop-card">
+      <div class="doop-hdr">
+        <div class="doop-ico">🚀</div>
+        <div>
+          <div class="doop-t">Doop</div>
+          <div class="doop-s">Built right = the demo that closes $150K offers</div>
+        </div>
+      </div>
       <div>
-        <div class="bref-title" style="color:var(--amber);">Block 1 — Applying Jobs</div>
-        <div class="bref-sub">10+ apps daily. Track everything. Follow up at 7 days. Respond to recruiters in 2 hours. Always runs first.</div>
-      </div>
-    </div>
-    <div class="bref">
-      <div class="bref-bar" style="background:var(--teal);"></div>
-      <div>
-        <div class="bref-title" style="color:var(--teal);">Block 2 — Learning AI</div>
-        <div class="bref-sub">40% course, 60% building. Push code to GitHub every session. No passive watching days.</div>
-      </div>
-    </div>
-    <div class="bref">
-      <div class="bref-bar" style="background:var(--blue);"></div>
-      <div>
-        <div class="bref-title" style="color:var(--blue);">Block 3 — Building Doop</div>
-        <div class="bref-sub">Tue + Thu only. Follow phase roadmap. Phase 1 first — no skipping ahead.</div>
-      </div>
-    </div>
-    <div class="bref">
-      <div class="bref-bar" style="background:var(--green);"></div>
-      <div>
-        <div class="bref-title" style="color:var(--green);">Block 4 — Marketing +</div>
-        <div class="bref-sub">5 recruiter outreaches. 5 LinkedIn connections. One post per week. arvindjtta.com.</div>
+        <div class="drow"><div class="drow-m">M 1<br><span style="font-size:10px;opacity:0.55;font-weight:400">May 18</span></div><div class="drow-t">Figma designs complete · TypeScript strict mode setup · New Architecture configured · Core screens scaffolded</div></div>
+        <div class="drow"><div class="drow-m">M 2<br><span style="font-size:10px;opacity:0.55;font-weight:400">Jun 18</span></div><div class="drow-t">Core features built in TypeScript · Zod API validation wired · First Reanimated 3 animations on real features</div></div>
+        <div class="drow"><div class="drow-m">M 3–4<br><span style="font-size:10px;opacity:0.55;font-weight:400">Jul 18</span></div><div class="drow-t">New Architecture deep integration · Fabric layout pass · Turbo Module implementation · UI polish and performance profiling</div></div>
+        <div class="drow"><div class="drow-m">M 5<br><span style="font-size:10px;opacity:0.55;font-weight:400">Sep 18</span></div><div class="drow-t">AI API integration (OpenAI/Gemini) · App Store submission · Beta testing and crash fixes</div></div>
+        <div class="drow"><div class="drow-m">M 6<br><span style="font-size:10px;opacity:0.55;font-weight:400">Oct 18</span></div><div class="drow-t">Live on App Store · Added to resume and LinkedIn · GitHub repo with README · Demo-ready for interviews</div></div>
       </div>
     </div>
   </div>
 
-  <!-- SCHEDULES -->
-  <div class="sec"><h2>Daily schedules — click to expand</h2></div>
-
-  <!-- MON + WED -->
-  <div class="day-card open" id="d-mw">
-    <div class="day-card-head" onclick="tog('d-mw')">
-      <div class="day-name">Monday + Wednesday</div>
-      <div class="day-badge db-power">⚡ Power day</div>
-      <div class="day-hrs">~6 hrs work</div>
-      <div class="day-chev">▼</div>
+  <!-- SCHEDULE -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <div class="sec-ico">⏱</div>
+      <div><div class="sec-t">Weekly Schedule</div><div class="sec-s">28hr execution budget · Mon–Thu 9am–4pm</div></div>
     </div>
-    <div class="day-body">
-      <div class="tl">
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-jobs"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">9:00 AM</div>
-            <div class="tl-title" style="color:var(--amber);">Block 1 — Applying Jobs</div>
-            <div class="tl-desc">10+ applications. Tailor resume per role. Log every single one in your tracker spreadsheet. No tracker entry = it didn't happen.</div>
-            <div class="tl-dur">120 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">11:00 AM</div>
-            <div class="tl-title" style="color:var(--text3);">Break — walk outside</div>
-            <div class="tl-desc">No phone. No content. Just move. Your 7 brain needs the reset.</div>
-            <div class="tl-dur">20 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-ai"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">11:20 AM</div>
-            <div class="tl-title" style="color:var(--teal);">Block 2 — Learning AI</div>
-            <div class="tl-desc">Watch 30–40 mins of course. Spend remaining time writing code from it. Push to GitHub before this block ends.</div>
-            <div class="tl-dur">90 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">12:50 PM</div>
-            <div class="tl-title" style="color:var(--text3);">Lunch</div>
-            <div class="tl-desc">Eat properly. Full stop.</div>
-            <div class="tl-dur">40 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-jobs"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">1:30 PM</div>
-            <div class="tl-title" style="color:var(--amber);">Block 1 continued — Follow-ups + recruiter responses</div>
-            <div class="tl-desc">Follow up on all apps older than 7 days. Respond to any recruiter messages. Search new postings. Check tracker for gaps.</div>
-            <div class="tl-dur">60 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-mkt"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">2:30 PM</div>
-            <div class="tl-title" style="color:var(--green);">Block 4 — Marketing +</div>
-            <div class="tl-desc">5 recruiter outreaches on LinkedIn. 5 engineer connections at target companies. One LinkedIn post (Wed only).</div>
-            <div class="tl-dur">30 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-gym"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">3:00 PM</div>
-            <div class="tl-title" style="color:var(--gym);">Gym</div>
-            <div class="tl-desc">Physical anchor for your 7 energy. Non-negotiable. Gets you mentally ready for DoorDash shift.</div>
-            <div class="tl-dur">60 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-dd"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">4:00 PM</div>
-            <div class="tl-title" style="color:var(--dd);">DoorDash</div>
-            <div class="tl-desc">Income. Visa. Loan. This is the foundation paying for everything else right now. Respect it.</div>
-            <div class="tl-dur">6 hrs</div>
-          </div>
+    <div class="sched">
+
+      <div class="dcard">
+        <div class="dcard-hdr"><div class="dcard-nm">Mon + Wed</div><span class="dtag pw">⚡ Power Day</span></div>
+        <div class="trows">
+          <div class="trow"><span class="tt">9:00</span><span class="pl ap">Jobs / Profile (no apps M1–2)</span></div>
+          <div class="trow"><span class="tt">11:00</span><span class="pl rt">Break · walk outside</span></div>
+          <div class="trow"><span class="tt">11:20</span><span class="pl ts">TypeScript + Doop build</span></div>
+          <div class="trow"><span class="tt">12:50</span><span class="pl rt">Lunch</span></div>
+          <div class="trow"><span class="tt">1:30</span><span class="pl ap">Follow-ups · recruiter replies</span></div>
+          <div class="trow"><span class="tt">2:30</span><span class="pl mk">LinkedIn post (Wed) · outreach</span></div>
+          <div class="trow"><span class="tt">3:00</span><span class="pl rt">Gym 💪</span></div>
+          <div class="trow"><span class="tt">4:00</span><span class="pl da">DoorDash</span></div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- TUE + THU -->
-  <div class="day-card" id="d-tt">
-    <div class="day-card-head" onclick="tog('d-tt')">
-      <div class="day-name">Tuesday + Thursday</div>
-      <div class="day-badge db-power">⚡ Build day</div>
-      <div class="day-hrs">~6 hrs work</div>
-      <div class="day-chev">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="tl">
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-jobs"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">9:00 AM</div>
-            <div class="tl-title" style="color:var(--amber);">Block 1 — Applying Jobs</div>
-            <div class="tl-desc">10+ applications. Log all in tracker. Tailor resume. Respond to any recruiter messages immediately — 2 hour rule.</div>
-            <div class="tl-dur">90 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">10:30 AM</div>
-            <div class="tl-title" style="color:var(--text3);">Break</div>
-            <div class="tl-desc">Short walk. Reset for deep work session ahead.</div>
-            <div class="tl-dur">15 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-doop"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">10:45 AM</div>
-            <div class="tl-title" style="color:var(--blue);">Block 3 — Building Doop</div>
-            <div class="tl-desc">Deep focus. Phone away. Follow the phase roadmap — Phase 1 only until complete. Commit and push everything before block ends.</div>
-            <div class="tl-dur">120 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">12:45 PM</div>
-            <div class="tl-title" style="color:var(--text3);">Lunch</div>
-            <div class="tl-desc">Eat properly.</div>
-            <div class="tl-dur">30 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-ai"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">1:15 PM</div>
-            <div class="tl-title" style="color:var(--teal);">Block 2 — Learning AI</div>
-            <div class="tl-desc">Apply what you are learning directly to Doop where possible. Build + watch. Push to GitHub.</div>
-            <div class="tl-dur">60 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-gym"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">2:15 PM</div>
-            <div class="tl-title" style="color:var(--gym);">Gym</div>
-            <div class="tl-desc">Physical grounding. Keeps the 7 mind from spiralling after intense build sessions.</div>
-            <div class="tl-dur">60 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-dd"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">4:00 PM</div>
-            <div class="tl-title" style="color:var(--dd);">DoorDash</div>
-            <div class="tl-desc">6 hours. Income for the visa runway. Respect the grind.</div>
-            <div class="tl-dur">6 hrs</div>
-          </div>
+      <div class="dcard">
+        <div class="dcard-hdr"><div class="dcard-nm">Tue + Thu</div><span class="dtag bu">🔨 Build Day</span></div>
+        <div class="trows">
+          <div class="trow"><span class="tt">9:00</span><span class="pl ap">Jobs (M3+ only) · replies</span></div>
+          <div class="trow"><span class="tt">10:30</span><span class="pl rt">Break</span></div>
+          <div class="trow"><span class="tt">10:45</span><span class="pl dp">Doop deep build session</span></div>
+          <div class="trow"><span class="tt">12:45</span><span class="pl rt">Lunch</span></div>
+          <div class="trow"><span class="tt">1:15</span><span class="pl ts">New Architecture / TS deep dive</span></div>
+          <div class="trow"><span class="tt">2:15</span><span class="pl rt">Gym 💪</span></div>
+          <div class="trow"><span class="tt">4:00</span><span class="pl da">DoorDash</span></div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- FRI -->
-  <div class="day-card" id="d-fri">
-    <div class="day-card-head" onclick="tog('d-fri')">
-      <div class="day-name">Friday</div>
-      <div class="day-badge db-dash">🚗 DoorDash morning</div>
-      <div class="day-hrs">Light afternoon</div>
-      <div class="day-chev">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="tl">
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-dd"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">8:00 AM</div>
-            <div class="tl-title" style="color:var(--dd);">DoorDash</div>
-            <div class="tl-desc">Morning income shift.</div>
-            <div class="tl-dur">5 hrs</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-jobs"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">1:30 PM</div>
-            <div class="tl-title" style="color:var(--amber);">Light jobs follow-up only</div>
-            <div class="tl-desc">Check for recruiter replies. Follow up on any pending applications. No new applications required — just maintenance.</div>
-            <div class="tl-dur">30 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">2:00 PM</div>
-            <div class="tl-title" style="color:var(--text3);">Rest</div>
-            <div class="tl-desc">You worked hard Mon–Thu. Protect the afternoon. Your Life Path 7 needs genuine downtime — not guilty scrolling.</div>
-            <div class="tl-dur">Rest</div>
-          </div>
+      <div class="dcard">
+        <div class="dcard-hdr"><div class="dcard-nm">Friday</div><span class="dtag li">🚗 Light Day</span></div>
+        <div class="trows">
+          <div class="trow"><span class="tt">8:00</span><span class="pl da">DoorDash · 5hrs</span></div>
+          <div class="trow"><span class="tt">1:30</span><span class="pl ap">Follow-ups only · no new apps</span></div>
+          <div class="trow"><span class="tt">2:00</span><span class="pl rt">Rest · protect afternoon</span></div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- SAT -->
-  <div class="day-card" id="d-sat">
-    <div class="day-card-head" onclick="tog('d-sat')">
-      <div class="day-name">Saturday</div>
-      <div class="day-badge db-dash">🚗 DoorDash morning</div>
-      <div class="day-hrs">Weekly reset</div>
-      <div class="day-chev">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="tl">
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-dd"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">8:00 AM</div>
-            <div class="tl-title" style="color:var(--dd);">DoorDash</div>
-            <div class="tl-desc">Morning income shift.</div>
-            <div class="tl-dur">5 hrs</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-jobs"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">1:30 PM</div>
-            <div class="tl-title" style="color:var(--amber);">Weekly reset — 30 minutes</div>
-            <div class="tl-desc">Open your tracker. Count total applications this week. Follow up on anything at 7 days. Write down: one thing avoided, one priority for next week. That is it.</div>
-            <div class="tl-dur">30 min</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">2:00 PM</div>
-            <div class="tl-title" style="color:var(--text3);">Rest</div>
-            <div class="tl-desc">Full afternoon off.</div>
-            <div class="tl-dur">Rest</div>
-          </div>
+      <div class="dcard">
+        <div class="dcard-hdr"><div class="dcard-nm">Sat + Sun</div><span class="dtag re">🔋 Recharge</span></div>
+        <div class="trows">
+          <div class="trow"><span class="tt">8:00</span><span class="pl da">DoorDash · 5hrs</span></div>
+          <div class="trow"><span class="tt">Sat 1:30</span><span class="pl mk">Weekly reset · 30min tracker</span></div>
+          <div class="trow"><span class="tt">Sun 1:00</span><span class="pl rt">Complete rest · no exceptions</span></div>
         </div>
       </div>
+
     </div>
   </div>
 
-  <!-- SUN -->
-  <div class="day-card" id="d-sun">
-    <div class="day-card-head" onclick="tog('d-sun')">
-      <div class="day-name">Sunday</div>
-      <div class="day-badge db-rest">Full rest</div>
-      <div class="day-hrs">Recharge</div>
-      <div class="day-chev">▼</div>
+  <!-- TARGETS TABLE -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <div class="sec-ico">🎯</div>
+      <div><div class="sec-t">Weekly Targets by Phase</div><div class="sec-s">Measure these every week</div></div>
     </div>
-    <div class="day-body">
-      <div class="tl">
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-dd"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">8:00 AM</div>
-            <div class="tl-title" style="color:var(--dd);">DoorDash</div>
-            <div class="tl-desc">Morning income shift.</div>
-            <div class="tl-dur">5 hrs</div>
-          </div>
-        </div>
-        <div class="tl-row">
-          <div class="tl-spine"><div class="tl-dot d-break"></div><div class="tl-line"></div></div>
-          <div class="tl-body">
-            <div class="tl-time">1:00 PM</div>
-            <div class="tl-title" style="color:var(--text3);">Complete rest</div>
-            <div class="tl-desc">No applications. No building. No LinkedIn. No guilt. Your Life Path 7 running on empty produces bad decisions and worse code. Sunday is maintenance for the rest of the week.</div>
-            <div class="tl-dur">Rest</div>
-          </div>
-        </div>
-      </div>
+    <div class="tbl">
+      <div class="tbl-row th"><div class="tbl-c">Metric</div><div class="tbl-c">M1–2 <span style="opacity:0.55;font-weight:400">· May 18 – Jul 18</span></div><div class="tbl-c">M3–6 <span style="opacity:0.55;font-weight:400">· Jul 18 – Nov 18</span></div></div>
+      <div class="tbl-row"><div class="tbl-c">Applications</div><div class="tbl-c">0 — profile only</div><div class="tbl-c">5–10 precision</div></div>
+      <div class="tbl-row"><div class="tbl-c">GitHub commits</div><div class="tbl-c">Every session</div><div class="tbl-c">Every session</div></div>
+      <div class="tbl-row"><div class="tbl-c">LinkedIn posts</div><div class="tbl-c">1/week (TS + Doop)</div><div class="tbl-c">1/week (NA + Doop)</div></div>
+      <div class="tbl-row"><div class="tbl-c">Eng manager outreach</div><div class="tbl-c">0</div><div class="tbl-c">3/week</div></div>
+      <div class="tbl-row"><div class="tbl-c">Doop build sessions</div><div class="tbl-c">4/week</div><div class="tbl-c">2–3/week</div></div>
+      <div class="tbl-row"><div class="tbl-c">Mock interviews</div><div class="tbl-c">0</div><div class="tbl-c">1–2/week (M3+)</div></div>
+      <div class="tbl-row"><div class="tbl-c">Gym sessions</div><div class="tbl-c">4 minimum</div><div class="tbl-c">4 minimum</div></div>
     </div>
   </div>
 
-  <!-- APPLICATION TRACKER -->
-  <div class="sec"><h2>Application tracker — build in Google Sheets today</h2></div>
-  <div class="tracker">
-    <div class="tr-row"><div class="tr-icon">🏢</div><div class="tr-label">Company name</div><div class="tr-detail">who you applied to</div></div>
-    <div class="tr-row"><div class="tr-icon">💼</div><div class="tr-label">Role title</div><div class="tr-detail">exact job title</div></div>
-    <div class="tr-row"><div class="tr-icon">📅</div><div class="tr-label">Date applied</div><div class="tr-detail">for follow-up timing</div></div>
-    <div class="tr-row"><div class="tr-icon">🔗</div><div class="tr-label">Job URL</div><div class="tr-detail">reference the JD in interviews</div></div>
-    <div class="tr-row"><div class="tr-icon">📊</div><div class="tr-label">Status</div><div class="tr-detail">Applied / Replied / Interview / Rejected / Offer</div></div>
-    <div class="tr-row"><div class="tr-icon">🔔</div><div class="tr-label">Follow-up date</div><div class="tr-detail">date applied + 7 days</div></div>
-    <div class="tr-row"><div class="tr-icon">📝</div><div class="tr-label">Notes</div><div class="tr-detail">recruiter name, anything relevant</div></div>
-  </div>
-
-  <!-- WEEKLY NUMBERS -->
-  <div class="sec"><h2>Your weekly targets</h2></div>
-  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:8px; margin-bottom:2rem;">
-    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
-      <div style="font-size:28px;font-weight:800;color:var(--amber);line-height:1;">50+</div>
-      <div style="font-size:11px;color:var(--text2);margin-top:4px;">applications per week</div>
+  <!-- TRACKER -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <div class="sec-ico">📋</div>
+      <div><div class="sec-t">Application Tracker</div><div class="sec-s">Build this in Google Sheets today</div></div>
     </div>
-    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
-      <div style="font-size:28px;font-weight:800;color:var(--teal);line-height:1;">25+</div>
-      <div style="font-size:11px;color:var(--text2);margin-top:4px;">LinkedIn connections</div>
-    </div>
-    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
-      <div style="font-size:28px;font-weight:800;color:var(--blue);line-height:1;">4</div>
-      <div style="font-size:11px;color:var(--text2);margin-top:4px;">Doop build sessions</div>
-    </div>
-    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
-      <div style="font-size:28px;font-weight:800;color:var(--green);line-height:1;">1</div>
-      <div style="font-size:11px;color:var(--text2);margin-top:4px;">LinkedIn post</div>
-    </div>
-    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:10px;padding:1rem;text-align:center;">
-      <div style="font-size:28px;font-weight:800;color:var(--gym);line-height:1;">4</div>
-      <div style="font-size:11px;color:var(--text2);margin-top:4px;">gym sessions minimum</div>
+    <div class="tgrid">
+      <div class="tcard"><div class="tcard-e">🏢</div><div class="tcard-n">Company + Role</div><div class="tcard-d">Exact title. Series A/B startups first. Remote-friendly only.</div></div>
+      <div class="tcard"><div class="tcard-e">📅</div><div class="tcard-n">Date + Follow-up</div><div class="tcard-d">Applied date + 7 days = follow-up. Non-negotiable.</div></div>
+      <div class="tcard"><div class="tcard-e">📊</div><div class="tcard-n">Status</div><div class="tcard-d">Applied → Replied → Interview → Offer → Rejected</div></div>
+      <div class="tcard"><div class="tcard-e">🔗</div><div class="tcard-n">Job URL</div><div class="tcard-d">Reference JD in interviews. Know their stack before you show up.</div></div>
+      <div class="tcard"><div class="tcard-e">👤</div><div class="tcard-n">Eng Manager</div><div class="tcard-d">Name + LinkedIn. Outreach within 24hrs of applying.</div></div>
+      <div class="tcard"><div class="tcard-e">📝</div><div class="tcard-n">Notes</div><div class="tcard-d">Their stack. Why you applied. Recruiter name. Anything relevant.</div></div>
     </div>
   </div>
 
   <!-- RULES -->
-  <div class="sec"><h2>3 non-negotiable rules</h2></div>
-  <div style="margin-bottom:2rem;">
-    <div class="rule">
-      <div class="rule-n">01</div>
-      <div>
-        <div class="rule-t">Jobs block runs first. Every Mon–Thu without exception.</div>
-        <div class="rule-s">Not after AI. Not after you feel warmed up. 9am sharp. The most urgent task gets the freshest brain. Your OPT window does not care how you feel that morning.</div>
-      </div>
+  <div class="sec">
+    <div class="sec-hdr">
+      <div class="sec-ico">⚖️</div>
+      <div><div class="sec-t">Non-Negotiable Rules</div><div class="sec-s">These don't bend. Ever.</div></div>
     </div>
-    <div class="rule">
-      <div class="rule-n">02</div>
-      <div>
-        <div class="rule-t">No passive AI learning. Every session ends with code on GitHub.</div>
-        <div class="rule-s">A watched course with no code written is entertainment. 10 lines of code pushed is a portfolio entry. The difference is what gets you hired.</div>
+    <div class="rules">
+      <div class="rule">
+        <div class="rule-n">01</div>
+        <div>
+          <div class="rule-t">No applications in Month 1–2</div>
+          <div class="rule-d">Your profile isn't ready. Applying now gets you <strong>junior interviews</strong>, not $130K ones. You only get one shot per company — don't waste it with a half-built profile.</div>
+        </div>
       </div>
-    </div>
-    <div class="rule">
-      <div class="rule-n">03</div>
-      <div>
-        <div class="rule-t">Run this exact plan for 30 days before changing anything.</div>
-        <div class="rule-s">Your Karmic Debt 14 will tell you the plan needs tweaking around day 10. It does not. The plan is fine. What it needs is your follow-through, not your improvements.</div>
+      <div class="rule">
+        <div class="rule-n">02</div>
+        <div>
+          <div class="rule-t">Precision over volume — always</div>
+          <div class="rule-d"><strong>5–10 targeted applications</strong> beat 50 generic ones. You have ~150 real target roles. Know each company. Tailor the resume. Reach out to the engineering manager directly.</div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-n">03</div>
+        <div>
+          <div class="rule-t">Learn TypeScript by building Doop</div>
+          <div class="rule-d">No passive watching. Every GitHub push is portfolio evidence. <strong>A watched course with no code is entertainment</strong>, not preparation. Build or it didn't happen.</div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-n">04</div>
+        <div>
+          <div class="rule-t">No junior roles. No internships.</div>
+          <div class="rule-d">You shipped a production app to <strong>10,000+ users</strong>. Applying junior signals you don't believe in your own value. Mid-level minimum ($100K+) if month 6 has zero offers.</div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-n">05</div>
+        <div>
+          <div class="rule-t">Animations serve features — 80/20 split</div>
+          <div class="rule-d">One Reanimated 3 animation per Doop feature. <strong>80% core stack, 20% animations.</strong> Passion is the edge — not the distraction. No offer = no animation sprints.</div>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="rule-n">06</div>
+        <div>
+          <div class="rule-t">Run V4 for 30 days before changing anything</div>
+          <div class="rule-d">Around day 10–12 Doop feels more exciting than applications. A new idea appears. <strong>Name the pattern and return to the plan.</strong> The plan needs follow-through, not improvements.</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ALERTS -->
-  <div class="sec"><h2>Important reminders</h2></div>
-  <div class="alert al-amber">
-    <h4>⚡ Your 28 hours is everything</h4>
-    Mon–Thu 9am–4pm is your entire execution budget for the week. Treat each of these 4 mornings like a shift you cannot miss. DoorDash is locked in. Gym is locked in. These 4 windows are what stands between you and a job offer.
+  <!-- WARNINGS -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <div class="sec-ico o">⚠️</div>
+      <div><div class="sec-t">Watch For These</div><div class="sec-s">Common traps — name them before they happen</div></div>
+    </div>
+    <div class="warns">
+      <div class="warn"><span class="warn-i">🚫</span><div class="warn-t"><strong>Don't learn AI before TypeScript.</strong> The sequence is TypeScript → New Architecture → AI integration. Skipping ahead means building on sand. AI layer comes in month 5–6, not month 1.</div></div>
+      <div class="warn"><span class="warn-i">🚫</span><div class="warn-t"><strong>Don't apply to React web roles.</strong> Your production mobile story is worth $150K in RN. That same story in React web reads as "mobile dev trying web" — immediate salary discount.</div></div>
+      <div class="warn"><span class="warn-i">🚫</span><div class="warn-t"><strong>Don't go deep on backend.</strong> You already clear the bar — FastAPI, REST, auth, real-time sync. tRPC basics in month 5–6, two weeks only. Backend depth is a 12-month detour.</div></div>
+      <div class="warn"><span class="warn-i">✅</span><div class="warn-t"><strong>DoorDash is not the enemy.</strong> It funds your visa runway. Without it, loan pressure corrupts every decision. Respect what it's doing for you while you build the exit from it.</div></div>
+    </div>
   </div>
-  <div class="alert al-teal">
-    <h4>✓ DoorDash is not the enemy</h4>
-    DoorDash is funding your visa runway right now. Without it, the loan pressure would corrupt every decision you make. Respect what it is doing for you while you build the exit from it.
-  </div>
-  <div class="alert al-green">
-    <h4>💪 Gym protects the plan</h4>
-    Your Life Path 7 under Personal Year 7 will generate intense mental energy. Without a physical outlet that energy becomes anxiety and overthinking. Gym is not optional — it is maintenance for your most important tool, which is your mind.
-  </div>
-  <div class="alert al-red">
-    <h4>⚠ Karmic Debt 14 watch</h4>
-    Around day 10–12, Doop will feel more exciting than applications. A new idea may appear. The AI course will feel more urgent than the job search. This is the pattern — it is completely predictable. Name it when it happens and return to Block 1 immediately. The only thing that breaks the 14 is finishing what you started.
+
+  <!-- FOOTER -->
+  <div class="ftr">
+    <div class="ftr-n">Aravind Reddy Jitta</div>
+    <div class="ftr-m">Execution Plan V4 · Starts May 18, 2026 · Full-Stack React Native Engineer</div>
   </div>
 
 </div>
 
-<footer>Aravind Reddy Jitta · Execution Plan V3 · Life Path 7 · Personal Year 7 · 2026</footer>
-
 <script>
-function tog(id) {
-  document.getElementById(id).classList.toggle('open');
-}
+  const saved = localStorage.getItem('arv-theme');
+  const sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  const init = saved || sys;
+  document.documentElement.setAttribute('data-theme', init);
+  sync(init);
+
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('arv-theme', next);
+    sync(next);
+  }
+
+  function sync(t) {
+    document.getElementById('ti').textContent = t === 'dark' ? '☀️' : '🌙';
+    document.getElementById('tl').textContent = t === 'dark' ? 'Light' : 'Dark';
+  }
 </script>
 </body>
 </html>
